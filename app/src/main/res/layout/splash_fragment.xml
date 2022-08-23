@@ -3,9 +3,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="Splash screen" />
+    <ImageView
+            android:layout_width="288dp"
+            android:layout_height="288dp"
+            android:layout_gravity="center"
+            android:padding="96dp"
+            android:src="@drawable/ic_splash" />
 </FrameLayout>
