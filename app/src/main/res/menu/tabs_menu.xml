@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+            android:id="@+id/main_tab"
+            android:icon="@drawable/ic_launcher_foreground"
+            android:title="@string/main_tab_title" />
+    <item
+            android:id="@+id/movies_tab"
+            android:icon="@drawable/ic_launcher_foreground"
+            android:title="@string/movies_tab_title" />
+
+    <item
+            android:id="@+id/staff_tab"
+            android:icon="@drawable/ic_launcher_foreground"
+            android:title="@string/staff_tab_title" />
+</menu>
