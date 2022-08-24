@@ -5,17 +5,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.moviesuniverse.MainApplication
 import com.example.moviesuniverse.R
 import com.example.moviesuniverse.databinding.TabsFragmentBinding
+import com.example.moviesuniverse.di.NavigationModule
 import com.example.moviesuniverse.presentation.screens.Screens
-import com.github.terrakok.cicerone.Navigator
+import com.github.terrakok.cicerone.NavigatorHolder
+import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.AppNavigator
+import org.koin.android.ext.android.inject
+import org.koin.core.parameter.parametersOf
+import org.koin.core.qualifier.named
 
 class TabsFragment : Fragment(R.layout.tabs_fragment) {
 
-    private val navigator: Navigator by lazy {
-        AppNavigator(requireActivity(), R.id.tabs_container, childFragmentManager)
+    private val router: Router by inject(qualifier = named(NavigationModule.TABS_QUALIFIER_NAME))
+    private val navigatorHolder: NavigatorHolder by inject(qualifier = named(NavigationModule.TABS_QUALIFIER_NAME))
+    private val navigator: AppNavigator by inject(qualifier = named(NavigationModule.TABS_QUALIFIER_NAME)) {
+        parametersOf(
+            requireActivity(),
+            R.id.tabs_container,
+            childFragmentManager
+        )
     }
 
     private var _binding: TabsFragmentBinding? = null
@@ -25,7 +35,7 @@ class TabsFragment : Fragment(R.layout.tabs_fragment) {
 
     override fun onResume() {
         super.onResume()
-        MainApplication.INSTANCE.tabsNavigatorHolder.setNavigator(navigator)
+        navigatorHolder.setNavigator(navigator)
     }
 
     override fun onCreateView(
@@ -40,18 +50,18 @@ class TabsFragment : Fragment(R.layout.tabs_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        MainApplication.INSTANCE.tabsRouter.replaceScreen(Screens.main())
+        router.replaceScreen(Screens.main())
 
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.main_tab -> {
-                    MainApplication.INSTANCE.tabsRouter.replaceScreen(Screens.main())
+                    router.replaceScreen(Screens.main())
                 }
                 R.id.movies_tab -> {
-                    MainApplication.INSTANCE.tabsRouter.replaceScreen(Screens.movies())
+                    router.replaceScreen(Screens.movies())
                 }
                 R.id.staff_tab -> {
-                    MainApplication.INSTANCE.tabsRouter.replaceScreen(Screens.staff())
+                    router.replaceScreen(Screens.staff())
                 }
             }
             true
@@ -60,7 +70,7 @@ class TabsFragment : Fragment(R.layout.tabs_fragment) {
 
     override fun onPause() {
         super.onPause()
-        MainApplication.INSTANCE.tabsNavigatorHolder.removeNavigator()
+        navigatorHolder.removeNavigator()
     }
 
     override fun onDestroyView() {

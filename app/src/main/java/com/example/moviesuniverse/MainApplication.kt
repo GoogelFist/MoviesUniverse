@@ -1,24 +1,20 @@
 package com.example.moviesuniverse
 
 import android.app.Application
-import com.github.terrakok.cicerone.Cicerone
+import com.example.moviesuniverse.di.applicationModule
+import com.example.moviesuniverse.di.globalNavigationModule
+import com.example.moviesuniverse.di.tabsNavigationModule
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
+import org.koin.core.logger.Level
 
-class MainApplication: Application() {
-    private val globalNavigation = Cicerone.create()
-    val globalRouter get() = globalNavigation.router
-    val globalNavigatorHolder get() = globalNavigation.getNavigatorHolder()
-
-    private val tabsNavigation = Cicerone.create()
-    val tabsRouter get() = tabsNavigation.router
-    val tabsNavigatorHolder get() = tabsNavigation.getNavigatorHolder()
+class MainApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        INSTANCE = this
-    }
-
-    companion object {
-        internal lateinit var INSTANCE: MainApplication
-            private set
+        startKoin {
+            androidLogger(Level.DEBUG)
+            modules(listOf(applicationModule, globalNavigationModule, tabsNavigationModule))
+        }
     }
 }
