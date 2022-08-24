@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.moviesuniverse.R
 import com.example.moviesuniverse.databinding.TabsFragmentBinding
-import com.example.moviesuniverse.di.NavigationModule
+import com.example.moviesuniverse.di.TABS_QUALIFIER_NAME
 import com.example.moviesuniverse.presentation.screens.Screens
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.Router
@@ -18,9 +18,9 @@ import org.koin.core.qualifier.named
 
 class TabsFragment : Fragment(R.layout.tabs_fragment) {
 
-    private val router: Router by inject(qualifier = named(NavigationModule.TABS_QUALIFIER_NAME))
-    private val navigatorHolder: NavigatorHolder by inject(qualifier = named(NavigationModule.TABS_QUALIFIER_NAME))
-    private val navigator: AppNavigator by inject(qualifier = named(NavigationModule.TABS_QUALIFIER_NAME)) {
+    private val router: Router by inject(qualifier = named(TABS_QUALIFIER_NAME))
+    private val navigatorHolder: NavigatorHolder by inject(qualifier = named(TABS_QUALIFIER_NAME))
+    private val navigator: AppNavigator by inject(qualifier = named(TABS_QUALIFIER_NAME)) {
         parametersOf(
             requireActivity(),
             R.id.tabs_container,

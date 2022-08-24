@@ -3,6 +3,18 @@
 
     <style name="Text" parent="TextAppearance.AppCompat" />
 
+    <style name="Text.24">
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="Text.24.Black">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="Text.14">
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <style name="Text.10">
         <item name="android:textSize">10sp</item>
     </style>

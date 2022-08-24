@@ -2,8 +2,6 @@ package com.example.moviesuniverse.di
 
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
-import com.example.moviesuniverse.di.NavigationModule.GLOBAL_QUALIFIER_NAME
-import com.example.moviesuniverse.di.NavigationModule.TABS_QUALIFIER_NAME
 import com.github.terrakok.cicerone.Cicerone
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.Router
@@ -31,25 +29,14 @@ val globalNavigationModule = module {
 
     single(named(GLOBAL_QUALIFIER_NAME)) { provideGlobalNavigation() }
     single(named(GLOBAL_QUALIFIER_NAME)) {
-        provideGlobalRouter(
-            get(
-                qualifier = named(
-                    GLOBAL_QUALIFIER_NAME
-                )
-            )
-        )
+        provideGlobalRouter(navigation = get(qualifier = named(GLOBAL_QUALIFIER_NAME)))
     }
     single(named(GLOBAL_QUALIFIER_NAME)) {
-        provideGlobalNavigatorHolder(
-            get(
-                qualifier = named(
-                    GLOBAL_QUALIFIER_NAME
-                )
-            )
-        )
+        provideGlobalNavigatorHolder(navigation = get(qualifier = named(GLOBAL_QUALIFIER_NAME)))
     }
-    single(named(GLOBAL_QUALIFIER_NAME)) { provideGlobalAppNavigator(get(), get()) }
-
+    single(named(GLOBAL_QUALIFIER_NAME)) {
+        provideGlobalAppNavigator(activity = get(), containerId = get())
+    }
 }
 
 val tabsNavigationModule = module {
@@ -75,16 +62,17 @@ val tabsNavigationModule = module {
     }
 
     single(named(TABS_QUALIFIER_NAME)) { provideTabsNavigation() }
-    single(named(TABS_QUALIFIER_NAME)) { provideTabsRouter(get(qualifier = named(TABS_QUALIFIER_NAME))) }
     single(named(TABS_QUALIFIER_NAME)) {
-        provideTabsNavigatorHolder(get(qualifier = named(TABS_QUALIFIER_NAME)))
+        provideTabsRouter(navigation = get(qualifier = named(TABS_QUALIFIER_NAME)))
     }
-    single(named(TABS_QUALIFIER_NAME)) { provideTabsAppNavigator(get(), get(), get()) }
-
+    single(named(TABS_QUALIFIER_NAME)) {
+        provideTabsNavigatorHolder(navigation = get(qualifier = named(TABS_QUALIFIER_NAME)))
+    }
+    single(named(TABS_QUALIFIER_NAME)) {
+        provideTabsAppNavigator(activity = get(), containerId = get(), fragmentManager = get())
+    }
 }
 
-object NavigationModule {
-    const val GLOBAL_QUALIFIER_NAME = "Global"
-    const val TABS_QUALIFIER_NAME = "Tabs"
-}
+const val GLOBAL_QUALIFIER_NAME = "Global"
+const val TABS_QUALIFIER_NAME = "Tabs"
 
