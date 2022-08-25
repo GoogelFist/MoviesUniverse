@@ -6,7 +6,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class MovieItemDTO(
+data class MovieItemResponse(
     @SerialName("films")
     val films: List<Film> = listOf(),
     @SerialName("pagesCount")

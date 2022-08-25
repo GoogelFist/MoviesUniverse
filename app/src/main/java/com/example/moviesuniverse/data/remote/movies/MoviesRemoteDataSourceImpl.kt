@@ -8,7 +8,7 @@ class MoviesRemoteDataSourceImpl(private val moviesRetrofitService: MoviesRetrof
 
     // TODO:
     override suspend fun loadMovies(): NetworkResult {
-        val response = moviesRetrofitService.getMovieList(TYPE_TOP_250, "1")
+        val response = moviesRetrofitService.getTop250MovieList(page = "1")
         return if (response.isSuccessful) {
             NetworkResult.Success(response.body()?.films ?: emptyList())
         } else {
@@ -17,4 +17,3 @@ class MoviesRemoteDataSourceImpl(private val moviesRetrofitService: MoviesRetrof
     }
 }
 
-private const val TYPE_TOP_250 = "TOP_250_BEST_FILMS"
