@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.moviesuniverse.R
 import com.example.moviesuniverse.databinding.MainFragmentBinding
+import com.example.moviesuniverse.presentation.screens.tabs.main.model.MainTabState
 import com.example.moviesuniverse.presentation.screens.tabs.recycler.MoviesAdapter
 import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -34,6 +36,22 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.mainTabState
 
+        lifecycleScope.launchWhenStarted {
+            viewModel.mainTabState.collect { state ->
+                when(state) {
+                    MainTabState.LoadError -> TODO()
+                    is MainTabState.Loaded -> {
+                        moviesAdapter.submitList(state.movies)
+                    }
+                    MainTabState.Loading -> {
+
+                    }
+                    MainTabState.RefreshError -> TODO()
+                    is MainTabState.Refreshed -> TODO()
+                    MainTabState.Refreshing -> TODO()
+                }
+            }
+        }
         setupRecycler()
     }
 

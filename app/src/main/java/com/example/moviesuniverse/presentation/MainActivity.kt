@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        lifecycleScope.launch {
+        lifecycleScope.launchWhenStarted {
             viewModel.mainState.collect { state ->
                 when (state) {
                     MainState.Loading -> router.replaceScreen(Screens.splash())

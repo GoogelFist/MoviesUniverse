@@ -10,10 +10,7 @@ class MoviesRemoteDataSourceImpl(private val moviesRetrofitService: MoviesRetrof
     override suspend fun loadMovies(): NetworkResult {
         val response = moviesRetrofitService.getMovieList(TYPE_TOP_250, "1")
         return if (response.isSuccessful) {
-            response.body()?.let {
-                NetworkResult.Success(it.films)
-            }
-            NetworkResult.Success()
+            NetworkResult.Success(response.body()?.films ?: emptyList())
         } else {
             NetworkResult.Failure(response.message())
         }

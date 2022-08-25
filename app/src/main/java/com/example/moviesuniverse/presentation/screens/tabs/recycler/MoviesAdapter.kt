@@ -17,7 +17,7 @@ class MoviesAdapter(private val onItemClickListener: (id: String) -> Unit) :
         val root = viewHolder.root
 
         root.setOnClickListener {
-            val position = viewHolder.adapterPosition
+            val position = viewHolder.bindingAdapterPosition
             if (position != NO_POSITION) {
                 val id = currentList[position].id
                 onItemClickListener.invoke(id)

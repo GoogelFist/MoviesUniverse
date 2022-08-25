@@ -17,7 +17,8 @@ class MainTabViewModel(private val loadMoviesUseCase: LoadMoviesUseCase) : ViewM
 
     init {
         viewModelScope.launch {
-            loadMoviesUseCase.invoke()
+            val list = loadMoviesUseCase.invoke()
+            _mainTabState.value = MainTabState.Loaded(list)
         }
     }
 }
