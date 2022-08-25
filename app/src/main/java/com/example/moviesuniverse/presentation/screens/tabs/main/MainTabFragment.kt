@@ -4,13 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import com.example.moviesuniverse.R
 import com.example.moviesuniverse.databinding.MainFragmentBinding
-import com.example.moviesuniverse.presentation.screens.tabs.main.model.MainTabState
-import com.example.moviesuniverse.presentation.screens.tabs.recycler.MoviesAdapter
-import com.example.moviesuniverse.presentation.screens.tabs.recycler.PagingMovieAdapter
+import com.example.moviesuniverse.presentation.screens.tabs.PagingMovieAdapter
 import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -22,7 +23,6 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
 
     private val viewModel by viewModel<MainTabViewModel>()
 
-//    private lateinit var moviesAdapter: MoviesAdapter
     private lateinit var moviesAdapter: PagingMovieAdapter
 
     override fun onCreateView(
@@ -39,20 +39,6 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
         viewModel.mainTabState
 
         lifecycleScope.launchWhenStarted {
-//            viewModel.mainTabState.collect { state ->
-//                when(state) {
-//                    MainTabState.LoadError -> TODO()
-//                    is MainTabState.Loaded -> {
-//                        moviesAdapter.submitList(state.movies)
-//                    }
-//                    MainTabState.Loading -> {
-//
-//                    }
-//                    MainTabState.RefreshError -> TODO()
-//                    is MainTabState.Refreshed -> TODO()
-//                    MainTabState.Refreshing -> TODO()
-//                }
-//            }
             viewModel.getMovieList().observe(viewLifecycleOwner) {
                 it?.let {
                     moviesAdapter.submitData(lifecycle, it)
@@ -70,11 +56,30 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
 
     private fun setupRecycler() {
         val recycler = binding.recyclerMain
-//        moviesAdapter = MoviesAdapter { id ->
-//            Snackbar.make(binding.root, id, Snackbar.LENGTH_SHORT).show()
-//        }
-        moviesAdapter = PagingMovieAdapter()
+
+        moviesAdapter = PagingMovieAdapter { id ->
+            Snackbar.make(binding.root, id, Snackbar.LENGTH_SHORT).show()
+        }
         recycler.adapter = moviesAdapter
+
+        moviesAdapter.addLoadStateListener { loadState ->
+            if (loadState.refresh is LoadState.Loading ||
+                loadState.append is LoadState.Loading)
+                binding.progressBarMainScreen.isVisible = true
+            else {
+                binding.progressBarMainScreen.isVisible = false
+                val errorState = when {
+                    loadState.append is LoadState.Error -> loadState.append as LoadState.Error
+                    loadState.prepend is LoadState.Error ->  loadState.prepend as LoadState.Error
+                    loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
+                    else -> null
+                }
+                errorState?.let {
+                    Toast.makeText(requireContext(), it.error.toString(), Toast.LENGTH_LONG).show()
+                }
+
+            }
+        }
     }
 
 }
