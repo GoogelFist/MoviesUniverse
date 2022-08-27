@@ -2,11 +2,15 @@ package com.example.moviesuniverse.data.remote.movies
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.example.moviesuniverse.data.local.movies.MoviesDao
+import com.example.moviesuniverse.data.remote.movies.models.toMovieEntity
 import com.example.moviesuniverse.data.remote.movies.models.toMovieItem
 import com.example.moviesuniverse.domain.models.MovieItem
 
-class MoviePagingSource(private val moviesRetrofitService: MoviesRetrofitService) :
-    PagingSource<Int, MovieItem>() {
+class MoviePagingSource(
+    private val moviesRetrofitService: MoviesRetrofitService,
+    private val moviesDao: MoviesDao
+) : PagingSource<Int, MovieItem>() {
 
     override fun getRefreshKey(state: PagingState<Int, MovieItem>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
@@ -19,6 +23,7 @@ class MoviePagingSource(private val moviesRetrofitService: MoviesRetrofitService
         return try {
             val position = params.key ?: START_POSITION
             val response = moviesRetrofitService.getTop250MovieList(page = position.toString())
+            moviesDao.saveMovies(response.body()!!.films.map { it.toMovieEntity() })
             LoadResult.Page(
                 data = response.body()!!.films.map { it.toMovieItem() },
                 prevKey = getPrevKey(position),
