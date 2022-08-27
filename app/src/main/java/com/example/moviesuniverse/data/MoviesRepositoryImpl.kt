@@ -1,19 +1,18 @@
 package com.example.moviesuniverse.data
 
-import androidx.lifecycle.LiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.liveData
 import com.example.moviesuniverse.data.remote.movies.MoviePagingSource
 import com.example.moviesuniverse.domain.MoviesRepository
 import com.example.moviesuniverse.domain.models.MovieItem
+import kotlinx.coroutines.flow.Flow
 
 class MoviesRepositoryImpl(
     private val moviePagingSource: MoviePagingSource
 ) : MoviesRepository {
 
-    override fun getTop250Movies(): LiveData<PagingData<MovieItem>> {
+    override fun getTop250Movies(): Flow<PagingData<MovieItem>> {
 
         return Pager(
             config = PagingConfig(
@@ -23,7 +22,7 @@ class MoviesRepositoryImpl(
             ),
             pagingSourceFactory = { moviePagingSource },
             initialKey = INITIAL_KEY
-        ).liveData
+        ).flow
     }
 
     companion object {

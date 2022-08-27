@@ -13,6 +13,8 @@ import com.example.moviesuniverse.R
 import com.example.moviesuniverse.databinding.MainFragmentBinding
 import com.example.moviesuniverse.presentation.screens.tabs.PagingMovieAdapter
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainTabFragment : Fragment(R.layout.main_fragment) {
@@ -36,16 +38,14 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.mainTabState
 
-        lifecycleScope.launchWhenStarted {
-            viewModel.getMovieList().observe(viewLifecycleOwner) {
-                it?.let {
-                    moviesAdapter.submitData(lifecycle, it)
-                }
+        setupRecycler()
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.getMovieList().collectLatest { movies ->
+                moviesAdapter.submitData(movies)
             }
         }
-        setupRecycler()
     }
 
     override fun onDestroyView() {
@@ -77,9 +77,7 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
                 errorState?.let {
                     Toast.makeText(requireContext(), it.error.toString(), Toast.LENGTH_LONG).show()
                 }
-
             }
         }
     }
-
 }

@@ -9,7 +9,7 @@ import com.example.moviesuniverse.databinding.MovieItemBinding
 import com.example.moviesuniverse.domain.models.MovieItem
 
 class PagingMovieAdapter(private val onItemClickListener: (id: String) -> Unit) :
-    PagingDataAdapter<MovieItem, PagingMovieAdapter.MovieViewHolder>(MovieComparator) {
+    PagingDataAdapter<MovieItem, MovieViewHolder>(MovieComparator) {
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         getItem(position)?.let { movieItem ->
@@ -26,16 +26,16 @@ class PagingMovieAdapter(private val onItemClickListener: (id: String) -> Unit) 
         val binding = MovieItemBinding.inflate(inflater, parent, false)
         return MovieViewHolder(binding)
     }
+}
 
-    class MovieViewHolder(val binding: MovieItemBinding) : RecyclerView.ViewHolder(binding.root)
+class MovieViewHolder(val binding: MovieItemBinding) : RecyclerView.ViewHolder(binding.root)
 
-    object MovieComparator : DiffUtil.ItemCallback<MovieItem>() {
-        override fun areItemsTheSame(oldItem: MovieItem, newItem: MovieItem): Boolean {
-            return oldItem.id == newItem.id
-        }
+object MovieComparator : DiffUtil.ItemCallback<MovieItem>() {
+    override fun areItemsTheSame(oldItem: MovieItem, newItem: MovieItem): Boolean {
+        return oldItem.id == newItem.id
+    }
 
-        override fun areContentsTheSame(oldItem: MovieItem, newItem: MovieItem): Boolean {
-            return oldItem == newItem
-        }
+    override fun areContentsTheSame(oldItem: MovieItem, newItem: MovieItem): Boolean {
+        return oldItem == newItem
     }
 }
