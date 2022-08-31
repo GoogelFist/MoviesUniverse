@@ -8,7 +8,9 @@ import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import retrofit2.Converter
 import retrofit2.Retrofit
 
 
@@ -20,12 +22,8 @@ private const val AUTH_TOKEN = "f1702a66-df70-4672-824c-77df35fd6d3f"
 private const val HEADER_CONTENT_TYPE = "Content-Type"
 private const val CONTENT_TYPE = "application/json"
 
-private val json = Json {
-    ignoreUnknownKeys = true
-    isLenient = true
-    encodeDefaults = false
-//    explicitNulls = false
-}
+private const val APP_INTERCEPTOR_QUALIFIER = "appInterceptor"
+
 
 @OptIn(ExperimentalSerializationApi::class)
 val retrofitModule = module {
@@ -36,7 +34,7 @@ val retrofitModule = module {
         return loggingInterceptor
     }
 
-    fun provideCustomInterceptor(): Interceptor {
+    fun provideAppInterceptor(): Interceptor {
         return Interceptor { chain ->
             val newRequest = chain.request()
                 .newBuilder()
@@ -49,19 +47,30 @@ val retrofitModule = module {
 
     fun provideHttpClient(
         loggingInterceptor: HttpLoggingInterceptor,
-        customInterceptor: Interceptor
+        appInterceptor: Interceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
-            .addInterceptor(customInterceptor)
+            .addInterceptor(appInterceptor)
             .build()
     }
 
-    fun provideRetrofit(client: OkHttpClient): Retrofit {
+    fun provideConverterFactory(): Converter.Factory {
+        val json = Json {
+            ignoreUnknownKeys = true
+            isLenient = true
+            encodeDefaults = false
+        }
         val contentType = CONTENT_TYPE.toMediaType()
+
+        return json.asConverterFactory(contentType)
+    }
+
+    fun provideRetrofit(client: OkHttpClient, converterFactory: Converter.Factory): Retrofit {
+
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .addConverterFactory(json.asConverterFactory(contentType))
+            .addConverterFactory(converterFactory)
             .client(client)
             .build()
     }
@@ -70,13 +79,15 @@ val retrofitModule = module {
         return retrofit.create(MoviesRetrofitService::class.java)
     }
 
-    // TODO: will check it
-    factory<HttpLoggingInterceptor> { provideHttpLoggingInterceptor() }
-    factory<Interceptor> { provideCustomInterceptor() }
-    factory<OkHttpClient> {
-        provideHttpClient(loggingInterceptor = get(), customInterceptor = get())
+    single<HttpLoggingInterceptor> { provideHttpLoggingInterceptor() }
+    single<Interceptor>(named(APP_INTERCEPTOR_QUALIFIER)) { provideAppInterceptor() }
+    single<OkHttpClient> {
+        provideHttpClient(
+            loggingInterceptor = get(),
+            appInterceptor = get(qualifier = named(APP_INTERCEPTOR_QUALIFIER))
+        )
     }
-    single<Retrofit> { provideRetrofit(client = get()) }
+    single<Converter.Factory> { provideConverterFactory() }
+    single<Retrofit> { provideRetrofit(client = get(), converterFactory = get()) }
     single<MoviesRetrofitService> { provideMovieRetrofitService(retrofit = get()) }
 }
-
