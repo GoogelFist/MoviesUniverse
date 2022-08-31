@@ -26,6 +26,14 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
         PagingMovieAdapter { id -> Snackbar.make(binding.root, id, Snackbar.LENGTH_LONG).show() }
     }
 
+    private val marginItemDecorator: MarginItemDecorator by lazy(LazyThreadSafetyMode.NONE) {
+        MarginItemDecorator(
+            verticalMargin = R.dimen.item_decorator_vertical_margin,
+            horizontalMargin = R.dimen.item_decorator_horizontal_margin,
+            spanCount = 2
+        )
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -53,26 +61,22 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
         val recycler = binding.recyclerMain
         recycler.adapter = moviesAdapter
 
-//        recycler.adapter = moviesAdapter.withLoadStateHeaderAndFooter(
-//            footer = MoviesLoaderStateAdapter(),
-//            header = MoviesLoaderStateAdapter()
-//        )
-
         moviesAdapter.addLoadStateListener { state ->
             with(binding) {
                 recycler.isVisible = state.refresh != LoadState.Loading
                 progressBarMainScreen.isVisible = state.refresh == LoadState.Loading
 
-                val errorState = when {
-                    state.append is LoadState.Error -> state.append as LoadState.Error
-                    state.prepend is LoadState.Error ->  state.prepend as LoadState.Error
-                    state.refresh is LoadState.Error -> state.refresh as LoadState.Error
-                    else -> null
-                }
-                errorState?.let {
-                    Snackbar.make(binding.root, it.error.toString(), Snackbar.LENGTH_LONG).show()
-                }
+                showErrorSnackBar(state.refresh is LoadState.Error)
             }
+        }
+
+        recycler.addItemDecoration(marginItemDecorator)
+
+    }
+
+    private fun showErrorSnackBar(isNeed: Boolean) {
+        if (isNeed) {
+            Snackbar.make(binding.root, "Error", Snackbar.LENGTH_LONG).show()
         }
     }
 
