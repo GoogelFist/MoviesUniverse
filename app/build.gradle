@@ -82,4 +82,7 @@ dependencies {
     //paging
     implementation "androidx.paging:paging-runtime:$paging_version"
     implementation "androidx.room:room-paging:$room_version"
+
+    //coil
+    implementation("io.coil-kt:coil:2.2.0")
 }

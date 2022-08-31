@@ -41,7 +41,7 @@ data class MovieEntity(
             genres = this.genres,
             year = this.year,
             rating = this.rating,
-            poster = this.posterUrl
+            poster = this.posterUrlPreview
         )
     }
 
