@@ -13,7 +13,7 @@ import com.example.moviesuniverse.data.local.movies.models.RemoteKeyEntity
 
 abstract class DataBase : RoomDatabase() {
     abstract fun getMovieDao(): MoviesDao
-    abstract fun getRemoteKeyDao(): RemoteKeyDao
+    abstract fun getRemoteKeyDao(): RemoteKeysDao
 }
 
 private const val DB_VERSION = 1

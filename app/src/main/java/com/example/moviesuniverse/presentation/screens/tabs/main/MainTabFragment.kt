@@ -78,13 +78,11 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
 
     private fun configSwipeRefresh() {
         binding.swipeRefreshLayout.apply {
-            isRefreshing = true
-
             setOnRefreshListener {
+                isRefreshing = false
                 moviesAdapter.refresh()
+                isRefreshing = false
             }
-
-            isRefreshing = false
         }
     }
 
