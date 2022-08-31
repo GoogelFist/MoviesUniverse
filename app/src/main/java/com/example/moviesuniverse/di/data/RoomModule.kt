@@ -15,10 +15,10 @@ val roomModule = module {
             .build()
     }
 
-    fun provideDao(database: DataBase): MoviesDao {
+    fun provideMovieDao(database: DataBase): MoviesDao {
         return database.getMovieDao()
     }
 
     single<DataBase> { provideDatabase(context = get()) }
-    single<MoviesDao> { provideDao(database = get()) }
+    single<MoviesDao> { provideMovieDao(database = get()) }
 }

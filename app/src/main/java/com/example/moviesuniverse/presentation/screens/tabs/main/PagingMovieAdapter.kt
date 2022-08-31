@@ -1,4 +1,4 @@
-package com.example.moviesuniverse.presentation.screens.tabs
+package com.example.moviesuniverse.presentation.screens.tabs.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

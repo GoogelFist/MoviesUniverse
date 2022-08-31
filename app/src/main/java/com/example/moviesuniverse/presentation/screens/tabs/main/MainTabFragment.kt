@@ -4,17 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.example.moviesuniverse.R
 import com.example.moviesuniverse.databinding.MainFragmentBinding
-import com.example.moviesuniverse.presentation.screens.tabs.PagingMovieAdapter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainTabFragment : Fragment(R.layout.main_fragment) {
@@ -25,7 +22,9 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
 
     private val viewModel by viewModel<MainTabViewModel>()
 
-    private lateinit var moviesAdapter: PagingMovieAdapter
+    private val moviesAdapter: PagingMovieAdapter by lazy(LazyThreadSafetyMode.NONE) {
+        PagingMovieAdapter { id -> Snackbar.make(binding.root, id, Snackbar.LENGTH_LONG).show() }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,12 +39,8 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecycler()
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.getMovieList().collectLatest { movies ->
-                moviesAdapter.submitData(movies)
-            }
-        }
+        configSwipeRefresh()
+        observeViewModel()
     }
 
     override fun onDestroyView() {
@@ -56,27 +51,47 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
 
     private fun setupRecycler() {
         val recycler = binding.recyclerMain
-
-        moviesAdapter = PagingMovieAdapter { id ->
-            Snackbar.make(binding.root, id, Snackbar.LENGTH_SHORT).show()
-        }
         recycler.adapter = moviesAdapter
 
-        moviesAdapter.addLoadStateListener { loadState ->
-            if (loadState.refresh is LoadState.Loading ||
-                loadState.append is LoadState.Loading)
-                binding.progressBarMainScreen.isVisible = true
-            else {
-                binding.progressBarMainScreen.isVisible = false
+//        recycler.adapter = moviesAdapter.withLoadStateHeaderAndFooter(
+//            footer = MoviesLoaderStateAdapter(),
+//            header = MoviesLoaderStateAdapter()
+//        )
+
+        moviesAdapter.addLoadStateListener { state ->
+            with(binding) {
+                recycler.isVisible = state.refresh != LoadState.Loading
+                progressBarMainScreen.isVisible = state.refresh == LoadState.Loading
+
                 val errorState = when {
-                    loadState.append is LoadState.Error -> loadState.append as LoadState.Error
-                    loadState.prepend is LoadState.Error ->  loadState.prepend as LoadState.Error
-                    loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
+                    state.append is LoadState.Error -> state.append as LoadState.Error
+                    state.prepend is LoadState.Error ->  state.prepend as LoadState.Error
+                    state.refresh is LoadState.Error -> state.refresh as LoadState.Error
                     else -> null
                 }
                 errorState?.let {
-                    Toast.makeText(requireContext(), it.error.toString(), Toast.LENGTH_LONG).show()
+                    Snackbar.make(binding.root, it.error.toString(), Snackbar.LENGTH_LONG).show()
                 }
+            }
+        }
+    }
+
+    private fun configSwipeRefresh() {
+        binding.swipeRefreshLayout.apply {
+            isRefreshing = true
+
+            setOnRefreshListener {
+                moviesAdapter.refresh()
+            }
+
+            isRefreshing = false
+        }
+    }
+
+    private fun observeViewModel() {
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+            viewModel.getMovieList().collectLatest { movies ->
+                moviesAdapter.submitData(movies)
             }
         }
     }

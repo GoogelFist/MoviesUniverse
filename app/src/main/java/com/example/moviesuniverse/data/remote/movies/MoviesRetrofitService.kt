@@ -18,6 +18,5 @@ interface MoviesRetrofitService {
         private const val TYPE = "type"
         private const val TYPE_TOP_250 = "TOP_250_BEST_FILMS"
         private const val PAGE = "page"
-
     }
 }

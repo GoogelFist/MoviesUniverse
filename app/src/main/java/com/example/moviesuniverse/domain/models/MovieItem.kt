@@ -8,5 +8,5 @@ data class MovieItem(
     val genres: String = "",
     val year: String = "",
     val rating: String = "",
-    val poster: String = ""
+    val poster: String = "",
 )
