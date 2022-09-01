@@ -1,6 +1,7 @@
 package com.example.moviesuniverse.di
 
 import com.example.moviesuniverse.presentation.MainViewModel
+import com.example.moviesuniverse.presentation.screens.tabs.detail.MovieDetailViewModel
 import com.example.moviesuniverse.presentation.screens.tabs.main.MainTabViewModel
 import org.koin.dsl.module
 
@@ -12,5 +13,9 @@ val applicationModule = module {
 
     single<MainTabViewModel> {
         MainTabViewModel(loadMoviesUseCase = get())
+    }
+
+    single<MovieDetailViewModel> {
+        MovieDetailViewModel(loadDetailMovieUseCase = get())
     }
 }

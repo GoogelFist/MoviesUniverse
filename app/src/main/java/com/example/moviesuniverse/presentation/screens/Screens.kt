@@ -5,6 +5,7 @@ import com.example.moviesuniverse.presentation.screens.tabs.main.MainTabFragment
 import com.example.moviesuniverse.presentation.screens.tabs.MoviesFragment
 import com.example.moviesuniverse.presentation.screens.tabs.StaffFragment
 import com.example.moviesuniverse.presentation.screens.tabs.TabsFragment
+import com.example.moviesuniverse.presentation.screens.tabs.detail.MovieDetailFragment
 import com.github.terrakok.cicerone.androidx.FragmentScreen
 
 object Screens {
@@ -13,4 +14,6 @@ object Screens {
     fun main() = FragmentScreen { MainTabFragment() }
     fun movies() = FragmentScreen { MoviesFragment() }
     fun staff() = FragmentScreen { StaffFragment() }
+
+    fun detailMovie(id: String) = FragmentScreen { MovieDetailFragment.newInstance(id) }
 }

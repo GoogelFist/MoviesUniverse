@@ -60,6 +60,7 @@ val retrofitModule = module {
             ignoreUnknownKeys = true
             isLenient = true
             encodeDefaults = false
+            coerceInputValues = true
         }
         val contentType = CONTENT_TYPE.toMediaType()
 

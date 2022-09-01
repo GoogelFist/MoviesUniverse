@@ -10,9 +10,17 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.example.moviesuniverse.R
 import com.example.moviesuniverse.databinding.MainFragmentBinding
+import com.example.moviesuniverse.di.GLOBAL_QUALIFIER
+import com.example.moviesuniverse.presentation.screens.Screens
+import com.github.terrakok.cicerone.NavigatorHolder
+import com.github.terrakok.cicerone.Router
+import com.github.terrakok.cicerone.androidx.AppNavigator
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collectLatest
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
+import org.koin.core.qualifier.named
 
 class MainTabFragment : Fragment(R.layout.main_fragment) {
 
@@ -23,15 +31,31 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
     private val viewModel by viewModel<MainTabViewModel>()
 
     private val moviesAdapter: PagingMovieAdapter by lazy(LazyThreadSafetyMode.NONE) {
-        PagingMovieAdapter { id -> Snackbar.make(binding.root, id, Snackbar.LENGTH_LONG).show() }
+        PagingMovieAdapter { id -> router.navigateTo(Screens.detailMovie(id)) }
     }
 
     private val marginItemDecorator: MarginItemDecorator by lazy(LazyThreadSafetyMode.NONE) {
         MarginItemDecorator(
             verticalMargin = R.dimen.item_decorator_vertical_margin,
             horizontalMargin = R.dimen.item_decorator_horizontal_margin,
-            spanCount = 2
+            spanCount = SPAN_COUNT
         )
+    }
+
+    // TODO: crash when resume app
+    private val router: Router by inject(qualifier = named(GLOBAL_QUALIFIER))
+    private val navigatorHolder: NavigatorHolder by inject(qualifier = named(GLOBAL_QUALIFIER))
+    private val navigator: AppNavigator by inject(qualifier = named(GLOBAL_QUALIFIER)) {
+        parametersOf(
+            requireActivity(),
+            R.id.tabs_container,
+            parentFragmentManager
+        )
+    }
+
+    override fun onResume() {
+        super.onResume()
+        navigatorHolder.setNavigator(navigator)
     }
 
     override fun onCreateView(
@@ -49,6 +73,11 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
         setupRecycler()
         configSwipeRefresh()
         observeViewModel()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        navigatorHolder.removeNavigator()
     }
 
     override fun onDestroyView() {
@@ -96,5 +125,9 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
                 moviesAdapter.submitData(movies)
             }
         }
+    }
+
+    companion object {
+        private const val SPAN_COUNT = 2
     }
 }

@@ -5,6 +5,7 @@ import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+// TODO: change this model 
 @Serializable
 data class MovieItemResponse(
     @SerialName("films")

@@ -12,6 +12,7 @@ import org.koin.dsl.module
 
 const val GLOBAL_QUALIFIER = "Global"
 const val TABS_QUALIFIER = "Tabs"
+const val SINGLE_TAB_QUALIFIER = "Single_Tab"
 
 val globalNavigationModule = module {
 
@@ -74,6 +75,40 @@ val tabsNavigationModule = module {
     }
     single(named(TABS_QUALIFIER)) {
         provideTabsAppNavigator(activity = get(), containerId = get(), fragmentManager = get())
+    }
+}
+
+val singleTabNavigationModule = module {
+
+    fun provideSingleTabNavigation(): Cicerone<Router> {
+        return Cicerone.create()
+    }
+
+    fun provideSingleTabRouter(navigation: Cicerone<Router>): Router {
+        return navigation.router
+    }
+
+    fun provideSingleTabNavigatorHolder(navigation: Cicerone<Router>): NavigatorHolder {
+        return navigation.getNavigatorHolder()
+    }
+
+    fun provideSingleTabAppNavigator(
+        activity: FragmentActivity,
+        containerId: Int,
+        fragmentManager: FragmentManager
+    ): AppNavigator {
+        return AppNavigator(activity, containerId, fragmentManager)
+    }
+
+    single(named(SINGLE_TAB_QUALIFIER)) { provideSingleTabNavigation() }
+    single(named(SINGLE_TAB_QUALIFIER)) {
+        provideSingleTabRouter(navigation = get(qualifier = named(SINGLE_TAB_QUALIFIER)))
+    }
+    single(named(SINGLE_TAB_QUALIFIER)) {
+        provideSingleTabNavigatorHolder(navigation = get(qualifier = named(SINGLE_TAB_QUALIFIER)))
+    }
+    single(named(SINGLE_TAB_QUALIFIER)) {
+        provideSingleTabAppNavigator(activity = get(), containerId = get(), fragmentManager = get())
     }
 }
 
