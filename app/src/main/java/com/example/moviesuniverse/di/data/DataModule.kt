@@ -6,9 +6,8 @@ import com.example.moviesuniverse.data.local.movies.MoviesDao
 import com.example.moviesuniverse.data.local.movies.RemoteKeysDao
 import com.example.moviesuniverse.data.remote.movies.MoviesRetrofitService
 import com.example.moviesuniverse.domain.MoviesRepository
+import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
-
-const val TYPE_TOP_250 = "TOP_250_BEST_FILMS"
 
 val dataModule = module {
 
@@ -27,15 +26,15 @@ val dataModule = module {
     }
 
     single<MoviesRepository> {
-        MoviesRepositoryImpl(moviesRemoteMediator = get(), moviesDao = get())
+        MoviesRepositoryImpl(moviesDao = get())
     }
 
-    single<MoviesRemoteMediator> {
+    single<MoviesRemoteMediator> { (query: String) ->
         provideTop250MoviesRemoteMediator(
             service = get(),
             moviesDao = get(),
             remoteKeysDao = get(),
-            query = TYPE_TOP_250
+            query = query
         )
     }
 }

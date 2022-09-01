@@ -6,14 +6,18 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.moviesuniverse.data.local.movies.MoviesDao
 import com.example.moviesuniverse.data.local.movies.models.MovieEntity
-import com.example.moviesuniverse.di.data.TYPE_TOP_250
 import com.example.moviesuniverse.domain.MoviesRepository
 import kotlinx.coroutines.flow.Flow
+import org.koin.core.parameter.parametersOf
+import org.koin.java.KoinJavaComponent.inject
 
 class MoviesRepositoryImpl(
-    private val moviesRemoteMediator: MoviesRemoteMediator,
     private val moviesDao: MoviesDao
 ) : MoviesRepository {
+
+    private val moviesRemoteMediator: MoviesRemoteMediator by inject(MoviesRemoteMediator::class.java) {
+        parametersOf(TYPE_TOP_250)
+    }
 
     @OptIn(ExperimentalPagingApi::class)
     override fun getTop250Movies(): Flow<PagingData<MovieEntity>> {
@@ -29,5 +33,7 @@ class MoviesRepositoryImpl(
     companion object {
         private const val PAGE_SIZE = 20
         private const val INITIAL_KEY = 1
+
+        private const val TYPE_TOP_250 = "TOP_250_BEST_FILMS"
     }
 }
