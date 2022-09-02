@@ -20,7 +20,7 @@ class MoviesRemoteMediator(
 ) : RemoteMediator<Int, MovieEntity>() {
 
     override suspend fun initialize(): InitializeAction {
-        return InitializeAction.LAUNCH_INITIAL_REFRESH
+        return InitializeAction.SKIP_INITIAL_REFRESH
     }
 
     override suspend fun load(

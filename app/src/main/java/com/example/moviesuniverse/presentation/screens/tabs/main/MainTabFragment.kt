@@ -19,7 +19,6 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 import org.koin.core.qualifier.named
 
 class MainTabFragment : Fragment(R.layout.main_fragment) {
@@ -42,14 +41,13 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
         )
     }
 
-    // TODO: crash when resume app
     private val router: Router by inject(qualifier = named(GLOBAL_QUALIFIER))
     private val navigatorHolder: NavigatorHolder by inject(qualifier = named(GLOBAL_QUALIFIER))
-    private val navigator: AppNavigator by inject(qualifier = named(GLOBAL_QUALIFIER)) {
-        parametersOf(
+    private val navigator: AppNavigator by lazy(LazyThreadSafetyMode.NONE) {
+        AppNavigator(
             requireActivity(),
-            R.id.tabs_container,
-            parentFragmentManager
+            R.id.fragment_container,
+            requireActivity().supportFragmentManager
         )
     }
 
@@ -120,9 +118,9 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
     }
 
     private fun observeViewModel() {
-        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.getMovieList().collectLatest { movies ->
-                moviesAdapter.submitData(movies)
+                moviesAdapter.submitData(viewLifecycleOwner.lifecycle, movies)
             }
         }
     }

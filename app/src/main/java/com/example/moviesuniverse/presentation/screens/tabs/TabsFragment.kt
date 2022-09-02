@@ -13,15 +13,14 @@ import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import org.koin.android.ext.android.inject
-import org.koin.core.parameter.parametersOf
 import org.koin.core.qualifier.named
 
 class TabsFragment : Fragment(R.layout.tabs_fragment) {
 
     private val router: Router by inject(qualifier = named(TABS_QUALIFIER))
     private val navigatorHolder: NavigatorHolder by inject(qualifier = named(TABS_QUALIFIER))
-    private val navigator: AppNavigator by inject(qualifier = named(TABS_QUALIFIER)) {
-        parametersOf(
+    private val navigator: AppNavigator by lazy(LazyThreadSafetyMode.NONE) {
+        AppNavigator(
             requireActivity(),
             R.id.tabs_container,
             childFragmentManager
@@ -50,7 +49,9 @@ class TabsFragment : Fragment(R.layout.tabs_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        router.replaceScreen(Screens.main())
+        if (isEmptyContainer()) {
+            router.replaceScreen(Screens.main())
+        }
 
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
@@ -67,6 +68,8 @@ class TabsFragment : Fragment(R.layout.tabs_fragment) {
             true
         }
     }
+
+    private fun isEmptyContainer() = childFragmentManager.fragments.size == 0
 
     override fun onPause() {
         super.onPause()

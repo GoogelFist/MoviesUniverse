@@ -73,7 +73,7 @@ data class MovieDetailResponse(
     @SerialName("ratingMpaa")
     val ratingMpaa: String = "",
     @SerialName("ratingRfCritics")
-    val ratingRfCritics: Int = 0,
+    val ratingRfCritics: Double = 0.0,
     @SerialName("ratingRfCriticsVoteCount")
     val ratingRfCriticsVoteCount: Int = 0,
     @SerialName("reviewsCount")

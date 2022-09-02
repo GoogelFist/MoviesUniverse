@@ -5,7 +5,7 @@ import com.example.moviesuniverse.data.remote.MoviesRemoteDataSource
 
 class MoviesRetrofitDataSourceImpl(private val retrofitService: MoviesRetrofitService): MoviesRemoteDataSource {
 
-    // TODO:
+    // TODO: replace with flow
     override suspend fun getMovieDetail(id: String): MovieDetailEntity {
         val response = retrofitService.getMovieDetail(id)
         if (response.isSuccessful) {

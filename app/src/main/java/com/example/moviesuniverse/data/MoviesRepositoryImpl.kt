@@ -26,13 +26,12 @@ class MoviesRepositoryImpl(
 
         return Pager(
             config = PagingConfig(pageSize = PAGE_SIZE),
-            initialKey = INITIAL_KEY,
             pagingSourceFactory = { localDataSource.getPagingSource(TYPE_TOP_250) },
             remoteMediator = moviesRemoteMediator
         ).flow
     }
 
-    // TODO:
+    // TODO: will add cache and flow
     override suspend fun getDetailMovie(id: String): MovieDetail {
         val movieDetailEntity = remoteDataSource.getMovieDetail(id)
         return movieDetailEntity.toMovieDetail()
