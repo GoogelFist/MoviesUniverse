@@ -51,11 +51,6 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
         )
     }
 
-    override fun onResume() {
-        super.onResume()
-        navigatorHolder.setNavigator(navigator)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -71,6 +66,11 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
         setupRecycler()
         configSwipeRefresh()
         observeViewModel()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        navigatorHolder.setNavigator(navigator)
     }
 
     override fun onPause() {

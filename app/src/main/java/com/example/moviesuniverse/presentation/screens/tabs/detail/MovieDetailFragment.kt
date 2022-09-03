@@ -1,6 +1,7 @@
 package com.example.moviesuniverse.presentation.screens.tabs.detail
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,9 +11,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.moviesuniverse.R
 import com.example.moviesuniverse.databinding.MovieDetailFragmentBinding
+import com.example.moviesuniverse.di.GLOBAL_QUALIFIER
+import com.github.terrakok.cicerone.NavigatorHolder
+import com.github.terrakok.cicerone.Router
+import com.github.terrakok.cicerone.androidx.AppNavigator
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.qualifier.named
 
 class MovieDetailFragment : Fragment(R.layout.movie_detail_fragment) {
 
@@ -21,6 +28,16 @@ class MovieDetailFragment : Fragment(R.layout.movie_detail_fragment) {
         get() = _binding!!
 
     private val viewModel by viewModel<MovieDetailViewModel>()
+
+    private val router: Router by inject(qualifier = named(GLOBAL_QUALIFIER))
+    private val navigatorHolder: NavigatorHolder by inject(qualifier = named(GLOBAL_QUALIFIER))
+    private val navigator: AppNavigator by lazy(LazyThreadSafetyMode.NONE) {
+        AppNavigator(
+            requireActivity(),
+            R.id.fragment_container,
+            requireActivity().supportFragmentManager
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,6 +52,19 @@ class MovieDetailFragment : Fragment(R.layout.movie_detail_fragment) {
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
 
+        binding.ivBackButton.setOnClickListener {
+            router.exit()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        navigatorHolder.setNavigator(navigator)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        navigatorHolder.removeNavigator()
     }
 
     override fun onDestroyView() {
@@ -64,6 +94,7 @@ class MovieDetailFragment : Fragment(R.layout.movie_detail_fragment) {
                         MovieDetailUiState.Loading -> {}
                         is MovieDetailUiState.Error -> {}
                         is MovieDetailUiState.Success -> {
+                            Log.e("TAG", state.movieDetail.toString())
                             binding.tvMovieDetailTitle.text = state.movieDetail.nameRu
                         }
                     }

@@ -4,6 +4,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.moviesuniverse.data.remote.movies.models.MovieDetailResponse
 import com.example.moviesuniverse.domain.models.MovieDetail
+import kotlinx.serialization.SerialName
+import org.koin.core.qualifier.named
 
 
 @Entity(
@@ -13,16 +15,21 @@ data class MovieDetailEntity(
     @PrimaryKey
     val filmId: String = "",
     val countries: String = "",
+    val description: String = "",
     val filmLength: String = "",
     val genres: String = "",
     val nameEn: String = "",
+    val nameOriginal: String = "",
     val nameRu: String = "",
     val posterUrl: String = "",
     val posterUrlPreview: String = "",
-    val rating: String = "",
-    val ratingChange: String = "",
-    val ratingVoteCount: String = "",
+    val ratingKinopoisk: String = "",
+    val shortDescription: String = "",
+    val slogan: String = "",
+    val type: String = "",
+    val webUrl: String = "",
     val year: String = "",
+
     val label: String = "",
     val addedDate: Long = System.currentTimeMillis()
 ) {
@@ -30,31 +37,44 @@ data class MovieDetailEntity(
     fun toMovieDetail(): MovieDetail {
         return MovieDetail(
             id = this.filmId,
-            nameRu = this.nameRu,
-            nameEn = this.nameEn,
             countries = this.countries,
+            description = this.description,
+            filmLength = this.filmLength,
             genres = this.genres,
-            year = this.year,
-            rating = this.rating,
-            poster = this.posterUrlPreview
+            nameEn = this.nameEn,
+            nameOriginal = this.nameOriginal,
+            nameRu = this.nameRu,
+            posterUrl = this.posterUrl,
+            posterUrlPreview = this.posterUrlPreview,
+            ratingKinopoisk = this.ratingKinopoisk,
+            shortDescription = this.shortDescription,
+            slogan = this.slogan,
+            type = this.type,
+            webUrl = this.webUrl,
+            year = this.year
         )
     }
 
     companion object {
-        // TODO:
+        // TODO: will think about mapping
         fun fromMovieDetailResponse(movieDetailResponse: MovieDetailResponse): MovieDetailEntity {
             return MovieDetailEntity(
                 filmId = movieDetailResponse.kinopoiskId.toString(),
-                nameRu = movieDetailResponse.nameRu,
-                nameEn = movieDetailResponse.nameEn ?: movieDetailResponse.nameRu,
                 countries = movieDetailResponse.countries.toString(),
-                genres = movieDetailResponse.genres.toString(),
-                year = movieDetailResponse.year.toString(),
-                rating = movieDetailResponse.ratingKinopoisk.toString(),
-                posterUrl = movieDetailResponse.posterUrl,
+                description = movieDetailResponse.description,
                 filmLength = movieDetailResponse.filmLength.toString(),
+                genres = movieDetailResponse.genres.toString(),
+                nameEn = movieDetailResponse.nameEn,
+                nameOriginal = movieDetailResponse.nameOriginal,
+                nameRu = movieDetailResponse.nameRu,
+                posterUrl = movieDetailResponse.posterUrl,
                 posterUrlPreview = movieDetailResponse.posterUrlPreview,
-                ratingVoteCount = movieDetailResponse.ratingKinopoiskVoteCount.toString()
+                ratingKinopoisk = movieDetailResponse.ratingKinopoisk.toString(),
+                shortDescription = movieDetailResponse.shortDescription,
+                slogan = movieDetailResponse.slogan,
+                type = movieDetailResponse.type,
+                webUrl = movieDetailResponse.webUrl,
+                year = movieDetailResponse.year.toString(),
             )
         }
     }

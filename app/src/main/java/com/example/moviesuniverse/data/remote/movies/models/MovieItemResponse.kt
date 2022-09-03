@@ -1,7 +1,6 @@
 package com.example.moviesuniverse.data.remote.movies.models
 
 
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -15,42 +14,13 @@ data class MovieItemResponse(
 ) {
     @Serializable
     data class Film(
-        @SerialName("countries")
-        val countries: List<Country> = listOf(),
         @SerialName("filmId")
         val filmId: Int = 0,
-        @SerialName("filmLength")
-        val filmLength: String = "",
-        @SerialName("genres")
-        val genres: List<Genre> = listOf(),
         @SerialName("nameEn")
-        val nameEn: String? = null,
+        val nameEn: String = "",
         @SerialName("nameRu")
         val nameRu: String = "",
-        @SerialName("posterUrl")
-        val posterUrl: String = "",
         @SerialName("posterUrlPreview")
-        val posterUrlPreview: String = "",
-        @SerialName("rating")
-        val rating: String = "",
-        @SerialName("ratingChange")
-        @Contextual
-        val ratingChange: Any? = null,
-        @SerialName("ratingVoteCount")
-        val ratingVoteCount: Int = 0,
-        @SerialName("year")
-        val year: String = ""
-    ) {
-        @Serializable
-        data class Country(
-            @SerialName("country")
-            val country: String = ""
-        )
-
-        @Serializable
-        data class Genre(
-            @SerialName("genre")
-            val genre: String = ""
-        )
-    }
+        val posterUrlPreview: String = ""
+    )
 }

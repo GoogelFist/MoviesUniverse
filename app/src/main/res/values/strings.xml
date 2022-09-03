@@ -7,7 +7,10 @@
     <string name="staff_tab_title">Актеры</string>
 
     <!--  Main fragment  -->
-    <string name="main_title_text">Фильмы</string>
+    <string name="main_title_text">Главная</string>
     <string name="try_again_button">Обновить</string>
     <string name="main_load_error_text">Не удалось загрузить ленту\nОбновите экран или попробуйте позже</string>
+
+    <!--  Movie detail fragment  -->
+    <string name="detail_title_text">Главная</string>
 </resources>
