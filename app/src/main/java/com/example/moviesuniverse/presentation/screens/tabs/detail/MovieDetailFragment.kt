@@ -12,11 +12,13 @@ import androidx.lifecycle.lifecycleScope
 import com.example.moviesuniverse.R
 import com.example.moviesuniverse.databinding.MovieDetailFragmentBinding
 import com.example.moviesuniverse.di.GLOBAL_QUALIFIER
+import com.example.moviesuniverse.presentation.screens.tabs.detail.model.MovieDetailEvent
 import com.example.moviesuniverse.presentation.screens.tabs.detail.model.MovieDetailState
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.AppNavigator
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.qualifier.named
@@ -74,25 +76,21 @@ class MovieDetailFragment : Fragment(R.layout.movie_detail_fragment) {
     }
 
     private fun observeViewModel() {
-
         val id = arguments?.getString(KEY_ID) ?: ""
+        viewModel.obtainEvent(MovieDetailEvent.OnLoadMovie(id))
 
-        viewLifecycleOwner.lifecycleScope.launch {
-
-            viewModel.getMovieDetail(id)
-                .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
-                .collect { state ->
-                    when (state) {
-                        MovieDetailState.Loading -> setLoadingState()
-                        is MovieDetailState.Error -> setErrorState()
-                        is MovieDetailState.Success -> setSuccessState(state)
-                    }
+        viewModel.movieDetailState
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+            .onEach { state ->
+                when (state) {
+                    MovieDetailState.Loading -> setLoadingState()
+                    is MovieDetailState.Error -> setErrorState()
+                    is MovieDetailState.Success -> setSuccessState(state)
                 }
-        }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private fun setLoadingState() {
-
         with(binding) {
             progressBarMovieDetail.isVisible = true
             groupSuccessDetailMovie.isVisible = false
