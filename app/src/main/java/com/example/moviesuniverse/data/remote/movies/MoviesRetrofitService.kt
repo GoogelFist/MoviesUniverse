@@ -3,7 +3,9 @@ package com.example.moviesuniverse.data.remote.movies
 import com.example.moviesuniverse.data.remote.movies.models.MovieDetailResponse
 import com.example.moviesuniverse.data.remote.movies.models.MovieItemResponse
 import retrofit2.Response
-import retrofit2.http.*
+import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 
 interface MoviesRetrofitService {

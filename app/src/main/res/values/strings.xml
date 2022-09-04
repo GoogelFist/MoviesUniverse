@@ -13,4 +13,5 @@
 
     <!--  Movie detail fragment  -->
     <string name="detail_title_text">Главная</string>
+    <string name="error_screen_text">Не удалось загрузить информацию о фильме</string>
 </resources>

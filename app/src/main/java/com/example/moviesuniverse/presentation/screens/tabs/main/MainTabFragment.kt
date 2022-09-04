@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.example.moviesuniverse.R
@@ -17,6 +19,7 @@ import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.qualifier.named
@@ -118,10 +121,12 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
     }
 
     private fun observeViewModel() {
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.getMovieList().collectLatest { movies ->
-                moviesAdapter.submitData(viewLifecycleOwner.lifecycle, movies)
-            }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.getMovieList()
+                .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+                .collectLatest { movies ->
+                    moviesAdapter.submitData(viewLifecycleOwner.lifecycle, movies)
+                }
         }
     }
 

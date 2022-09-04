@@ -1,21 +1,21 @@
 package com.example.moviesuniverse.presentation.screens.tabs.detail
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.example.moviesuniverse.R
 import com.example.moviesuniverse.databinding.MovieDetailFragmentBinding
 import com.example.moviesuniverse.di.GLOBAL_QUALIFIER
+import com.example.moviesuniverse.presentation.screens.tabs.detail.model.MovieDetailState
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.AppNavigator
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -50,6 +50,7 @@ class MovieDetailFragment : Fragment(R.layout.movie_detail_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         observeViewModel()
 
         binding.ivBackButton.setOnClickListener {
@@ -72,34 +73,49 @@ class MovieDetailFragment : Fragment(R.layout.movie_detail_fragment) {
         _binding = null
     }
 
-    private fun showErrorSnackBar(isNeed: Boolean) {
-        if (isNeed) {
-            Snackbar.make(binding.root, "Error", Snackbar.LENGTH_LONG).show()
-        }
-    }
-
     private fun observeViewModel() {
-        val id = arguments?.getString(KEY_ID)
+
+        val id = arguments?.getString(KEY_ID) ?: ""
 
         viewLifecycleOwner.lifecycleScope.launch {
 
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-
-                id?.let { movieId ->
-                    viewModel.getMovieDetail(movieId)
-                }
-
-                viewModel.movieDetailState.collect { state ->
+            viewModel.getMovieDetail(id)
+                .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+                .collect { state ->
                     when (state) {
-                        MovieDetailUiState.Loading -> {}
-                        is MovieDetailUiState.Error -> {}
-                        is MovieDetailUiState.Success -> {
-                            Log.e("TAG", state.movieDetail.toString())
-                            binding.tvMovieDetailTitle.text = state.movieDetail.nameRu
-                        }
+                        MovieDetailState.Loading -> setLoadingState()
+                        is MovieDetailState.Error -> setErrorState()
+                        is MovieDetailState.Success -> setSuccessState(state)
                     }
                 }
-            }
+        }
+    }
+
+    private fun setLoadingState() {
+
+        with(binding) {
+            progressBarMovieDetail.isVisible = true
+            groupSuccessDetailMovie.isVisible = false
+            groupErrorDetailMovie.isVisible = false
+        }
+    }
+
+    // TODO: will handle error from net, empty data base, and both
+    private fun setErrorState() {
+        with(binding) {
+            progressBarMovieDetail.isVisible = false
+            groupSuccessDetailMovie.isVisible = false
+            groupErrorDetailMovie.isVisible = true
+        }
+    }
+
+    private fun setSuccessState(state: MovieDetailState.Success) {
+        with(binding) {
+            progressBarMovieDetail.isVisible = false
+            groupSuccessDetailMovie.isVisible = true
+            groupErrorDetailMovie.isVisible = false
+
+            tvMovieDetailTitle.text = state.movieDetail.nameRu
         }
     }
 

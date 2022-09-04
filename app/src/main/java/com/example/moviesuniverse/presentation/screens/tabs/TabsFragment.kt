@@ -69,6 +69,7 @@ class TabsFragment : Fragment(R.layout.tabs_fragment) {
         }
     }
 
+    // TODO: think about it
     private fun isEmptyContainer() = childFragmentManager.fragments.size == 0
 
     override fun onPause() {

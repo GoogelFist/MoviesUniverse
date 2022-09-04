@@ -1,27 +1,36 @@
 package com.example.moviesuniverse.presentation.screens.tabs.detail
 
 import androidx.lifecycle.ViewModel
-import com.example.moviesuniverse.domain.models.MovieDetail
+import com.example.moviesuniverse.data.model.ApiResult
 import com.example.moviesuniverse.domain.usecases.LoadDetailMovieUseCase
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
+import com.example.moviesuniverse.presentation.screens.tabs.detail.model.MovieDetailState
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
 
 class MovieDetailViewModel(private val loadDetailMovieUseCase: LoadDetailMovieUseCase) :
     ViewModel() {
 
-    private val _movieDetailState = MutableStateFlow<MovieDetailUiState>(MovieDetailUiState.Loading)
-    val movieDetailState: StateFlow<MovieDetailUiState> = _movieDetailState
 
-    suspend fun getMovieDetail(id: String) {
-        _movieDetailState.update { MovieDetailUiState.Loading }
-        val movieDetail = loadDetailMovieUseCase(id)
-        _movieDetailState.update { MovieDetailUiState.Success(movieDetail) }
+    // TODO: will remove delay
+    fun getMovieDetail(id: String): Flow<MovieDetailState> {
+
+        return flow {
+
+            emit(MovieDetailState.Loading)
+            delay(1000)
+
+            loadDetailMovieUseCase(id)
+                .catch { e ->
+                    emit(MovieDetailState.Error(e))
+                }
+                .collect { result ->
+                    when (result) {
+                        is ApiResult.Error -> emit(MovieDetailState.Error(result.error))
+                        is ApiResult.Success -> emit(MovieDetailState.Success(result.movieDetailResponse))
+                    }
+                }
+        }
     }
-}
-
-sealed class MovieDetailUiState {
-    object Loading : MovieDetailUiState()
-    data class Success(val movieDetail: MovieDetail) : MovieDetailUiState()
-    data class Error(val exception: Throwable) : MovieDetailUiState()
 }
