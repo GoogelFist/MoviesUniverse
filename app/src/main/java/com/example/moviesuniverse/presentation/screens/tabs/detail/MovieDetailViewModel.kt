@@ -2,7 +2,7 @@ package com.example.moviesuniverse.presentation.screens.tabs.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.moviesuniverse.data.model.ApiResult
+import com.example.moviesuniverse.data.remote.ApiResult
 import com.example.moviesuniverse.domain.usecases.LoadDetailMovieUseCase
 import com.example.moviesuniverse.presentation.screens.EventHandler
 import com.example.moviesuniverse.presentation.screens.tabs.detail.model.MovieDetailEvent

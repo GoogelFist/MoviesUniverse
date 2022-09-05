@@ -37,7 +37,7 @@ val moviesDataModule = module {
     }
 
     single<MoviesLocalDataSource> {
-        RoomDataSourceImpl(moviesDao = get())
+        RoomDataSourceImpl(moviesDao = get(), moveDetailDao = get())
     }
 
     single<MoviesRemoteMediator> { (query: String) ->

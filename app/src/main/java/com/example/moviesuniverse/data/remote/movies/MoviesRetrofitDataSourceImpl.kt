@@ -1,7 +1,7 @@
 package com.example.moviesuniverse.data.remote.movies
 
 import com.example.moviesuniverse.data.local.movies.models.MovieDetailEntity
-import com.example.moviesuniverse.data.model.ApiResult
+import com.example.moviesuniverse.data.remote.ApiResult
 import com.example.moviesuniverse.data.remote.MoviesRemoteDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

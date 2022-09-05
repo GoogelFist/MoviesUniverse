@@ -4,8 +4,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.moviesuniverse.data.remote.movies.models.MovieDetailResponse
 import com.example.moviesuniverse.domain.models.MovieDetail
-import kotlinx.serialization.SerialName
-import org.koin.core.qualifier.named
 
 
 @Entity(
@@ -30,7 +28,6 @@ data class MovieDetailEntity(
     val webUrl: String = "",
     val year: String = "",
 
-    val label: String = "",
     val addedDate: Long = System.currentTimeMillis()
 ) {
 
