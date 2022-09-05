@@ -54,10 +54,8 @@ class MovieDetailFragment : Fragment(R.layout.movie_detail_fragment) {
         super.onViewCreated(view, savedInstanceState)
 
         observeViewModel()
-
-        binding.ivBackButton.setOnClickListener {
-            router.exit()
-        }
+        init()
+        configButtons()
     }
 
     override fun onResume() {
@@ -76,9 +74,6 @@ class MovieDetailFragment : Fragment(R.layout.movie_detail_fragment) {
     }
 
     private fun observeViewModel() {
-        val id = arguments?.getString(KEY_ID) ?: ""
-        viewModel.obtainEvent(MovieDetailEvent.OnLoadMovie(id))
-
         viewModel.movieDetailState
             .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
             .onEach { state ->
@@ -88,6 +83,17 @@ class MovieDetailFragment : Fragment(R.layout.movie_detail_fragment) {
                     is MovieDetailState.Success -> setSuccessState(state)
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
+    }
+
+    private fun init() {
+        val id = arguments?.getString(KEY_ID) ?: ""
+        viewModel.obtainEvent(MovieDetailEvent.OnLoadMovie(id))
+    }
+
+    private fun configButtons() {
+        binding.ivBackButton.setOnClickListener {
+            router.exit()
+        }
     }
 
     private fun setLoadingState() {
