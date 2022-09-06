@@ -20,7 +20,10 @@ class MoviesRemoteMediator(
 ) : RemoteMediator<Int, MovieEntity>() {
 
     override suspend fun initialize(): InitializeAction {
-        return InitializeAction.SKIP_INITIAL_REFRESH
+        if (moviesDao.isExist(query)) {
+            return InitializeAction.SKIP_INITIAL_REFRESH
+        }
+        return InitializeAction.LAUNCH_INITIAL_REFRESH
     }
 
     override suspend fun load(
@@ -29,7 +32,9 @@ class MoviesRemoteMediator(
     ): MediatorResult {
         return try {
             val loadKey = when (loadType) {
-                LoadType.REFRESH -> INITIAL_KEY
+                LoadType.REFRESH -> {
+                    INITIAL_KEY
+                }
                 LoadType.PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
                 LoadType.APPEND -> {
                     val remoteKey = remoteKeysDao.remoteKeyByQuery(query)

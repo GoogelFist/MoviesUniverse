@@ -17,4 +17,7 @@ interface MoviesDao {
 
     @Query("DELETE FROM movies WHERE label LIKE :query")
     suspend fun deleteMoviesByQuery(query: String)
+
+    @Query("SELECT EXISTS(SELECT filmId FROM movies WHERE label LIKE :query LIMIT 1)")
+    suspend fun isExist(query: String): Boolean
 }
