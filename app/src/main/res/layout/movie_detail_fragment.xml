@@ -23,17 +23,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/detail_title_text"
-            android:textAppearance="@style/Text.24.Black"
+            android:textAppearance="@style/Text.MontserratSemiBold.24.Black"
             app:layout_constraintBottom_toBottomOf="@id/iv_back_button"
             app:layout_constraintStart_toEndOf="@id/iv_back_button"
             app:layout_constraintTop_toTopOf="@id/iv_back_button" />
 
-    <TextView
-            android:id="@+id/tv_movie_detail_title"
+    <ScrollView
+            android:id="@+id/scroll_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            tools:text="asdfasdf" />
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_back_button"
+            app:layout_constraintVertical_bias="1.0">
+
+        <include
+                android:id="@+id/include_movie_detail_data"
+                layout="@layout/movie_detail_data"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+
+    </ScrollView>
 
     <ProgressBar
             android:id="@+id/progress_bar_movie_detail"
@@ -51,6 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
             android:src="@drawable/ic_sad_face"
             app:layout_constraintBottom_toTopOf="@id/tv_error_message"
             app:layout_constraintEnd_toEndOf="parent"
@@ -61,10 +74,9 @@
             android:id="@+id/tv_error_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
             android:gravity="center"
             android:text="@string/error_screen_text"
-            android:textAppearance="@style/Text.14"
+            android:textAppearance="@style/Text.RobotoRegular.14.Black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -81,6 +93,6 @@
             android:id="@+id/group_success_detail_movie"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="tv_movie_detail_title" />
+            app:constraint_referenced_ids="scroll_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

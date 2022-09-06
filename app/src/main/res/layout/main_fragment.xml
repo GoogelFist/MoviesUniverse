@@ -12,7 +12,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/main_title_text"
-            android:textAppearance="@style/Text.24.Black"
+            android:textAppearance="@style/Text.MontserratSemiBold.24.Black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/main_load_error_text"
-                android:textAppearance="@style/Text.14" />
+                android:textAppearance="@style/Text.RobotoRegular.14.Black" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

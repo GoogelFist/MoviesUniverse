@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import coil.load
 import com.example.moviesuniverse.R
 import com.example.moviesuniverse.databinding.MovieDetailFragmentBinding
 import com.example.moviesuniverse.di.GLOBAL_QUALIFIER
@@ -104,7 +105,6 @@ class MovieDetailFragment : Fragment(R.layout.movie_detail_fragment) {
         }
     }
 
-    // TODO: will handle error from net, empty data base, and both
     private fun setErrorState() {
         with(binding) {
             progressBarMovieDetail.isVisible = false
@@ -119,7 +119,27 @@ class MovieDetailFragment : Fragment(R.layout.movie_detail_fragment) {
             groupSuccessDetailMovie.isVisible = true
             groupErrorDetailMovie.isVisible = false
 
-            tvMovieDetailTitle.text = state.movieDetail.nameRu
+            bindMovieDetailData(state)
+        }
+    }
+
+    private fun bindMovieDetailData(state: MovieDetailState.Success) {
+        with(binding.includeMovieDetailData) {
+            ivPosterMovieDetail.load(state.movieDetail.posterUrl) {
+                crossfade(true)
+                placeholder(R.drawable.image_placeholder)
+                error(R.drawable.image_error_placeholder)
+                allowHardware(false)
+            }
+
+            tvNameMovieDetail.text = state.movieDetail.nameRu
+            tvYearMovieDetail.text = state.movieDetail.year
+            tvCountiesMovieDetail.text = state.movieDetail.countries
+            tvSloganMovieDetail.text = state.movieDetail.slogan
+            tvGenresMovieDetail.text = state.movieDetail.genres
+            tvLengthMovieDetail.text = state.movieDetail.filmLength
+            tvRatingMovieDetail.text = state.movieDetail.ratingKinopoisk
+            tvDescriptionMovieDetail.text = state.movieDetail.description
         }
     }
 

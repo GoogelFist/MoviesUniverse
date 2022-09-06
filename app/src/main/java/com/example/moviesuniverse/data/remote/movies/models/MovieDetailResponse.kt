@@ -16,26 +16,14 @@ data class MovieDetailResponse(
     val genres: List<Genre> = listOf(),
     @SerialName("kinopoiskId")
     val kinopoiskId: Int = 0,
-    @SerialName("nameEn")
-    val nameEn: String = "",
-    @SerialName("nameOriginal")
-    val nameOriginal: String = "",
     @SerialName("nameRu")
     val nameRu: String = "",
     @SerialName("posterUrl")
     val posterUrl: String = "",
-    @SerialName("posterUrlPreview")
-    val posterUrlPreview: String = "",
     @SerialName("ratingKinopoisk")
     val ratingKinopoisk: Double = 0.0,
-    @SerialName("shortDescription")
-    val shortDescription: String = "",
     @SerialName("slogan")
     val slogan: String = "",
-    @SerialName("type")
-    val type: String = "",
-    @SerialName("webUrl")
-    val webUrl: String = "",
     @SerialName("year")
     val year: Int = 0
 ) {
