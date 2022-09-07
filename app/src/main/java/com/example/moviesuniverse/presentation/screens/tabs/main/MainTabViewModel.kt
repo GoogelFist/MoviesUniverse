@@ -32,10 +32,13 @@ class MainTabViewModel(private val loadMoviesUseCase: LoadMoviesUseCase) : ViewM
     override fun obtainEvent(event: MainTabEvent) {
         when (event) {
             MainTabEvent.OnLoading -> _movieState.tryEmit(MainTabState.Loading)
-            MainTabEvent.OnEmpty -> _movieState.tryEmit(MainTabState.Empty)
+
             MainTabEvent.OnRefresh -> _movieState.tryEmit(MainTabState.Refreshing)
             MainTabEvent.OnRefreshError -> _movieState.tryEmit(MainTabState.RefreshError)
+
+            MainTabEvent.OnEmpty -> _movieState.tryEmit(MainTabState.Empty)
             MainTabEvent.OnDefault -> _movieState.tryEmit(MainTabState.Default)
+
             is MainTabEvent.OnNavToDetailScreen -> navigateToDetailScreen(event.id)
         }
     }

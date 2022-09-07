@@ -15,7 +15,6 @@
     <!--  Movie detail fragment  -->
     <string name="detail_title_text">Главная</string>
     <string name="error_screen_text">Не удалось загрузить информацию о фильме</string>
-
     <string name="rating_title_movie_detail">Рейтинг:</string>
     <string name="year_title_movie_detail">Год производства:</string>
     <string name="length_title_movie_detail">Продолжительность:</string>

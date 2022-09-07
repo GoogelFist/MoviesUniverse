@@ -22,7 +22,6 @@ class MainApplication : Application() {
                     applicationModule,
                     globalNavigationModule,
                     tabsNavigationModule,
-                    singleTabNavigationModule,
                     moviesDataModule,
                     domainModule,
                     retrofitModule,

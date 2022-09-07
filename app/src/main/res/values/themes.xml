@@ -10,7 +10,7 @@
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" >@color/white</item>
+        <item name="android:statusBarColor">@color/white</item>
         <item name="android:windowLightStatusBar">true</item>
 
         <item name="android:navigationBarColor">@color/white</item>
@@ -19,7 +19,8 @@
         <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="s">@color/transparent</item>
         <!-- Customize your theme here. -->
 
-        <item name="snackbarStyle"> @style/MaterialSnackbarTheme</item>
-        <item name="snackbarTextViewStyle"> @style/MaterialSnackbarTextViewTheme</item>
+        <item name="snackbarStyle">@style/MaterialSnackbarTheme</item>
+        <item name="snackbarTextViewStyle">@style/MaterialSnackbarTextViewTheme</item>
     </style>
+
 </resources>

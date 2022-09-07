@@ -6,13 +6,9 @@ data class MovieDetail(
     val description: String = "",
     val filmLength: String = "",
     val genres: String = "",
-    val nameEn: String = "",
-    val nameOriginal: String = "",
     val nameRu: String = "",
     val posterUrl: String = "",
     val ratingKinopoisk: String = "",
     val slogan: String = "",
-    val type: String = "",
-    val webUrl: String = "",
     val year: String = ""
 )
