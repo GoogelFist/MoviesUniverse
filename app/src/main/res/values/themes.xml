@@ -18,5 +18,8 @@
 
         <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="s">@color/transparent</item>
         <!-- Customize your theme here. -->
+
+        <item name="snackbarStyle"> @style/MaterialSnackbarTheme</item>
+        <item name="snackbarTextViewStyle"> @style/MaterialSnackbarTextViewTheme</item>
     </style>
 </resources>

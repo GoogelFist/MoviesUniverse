@@ -17,7 +17,6 @@ import com.example.moviesuniverse.domain.models.MovieItem
 data class MovieEntity(
     @PrimaryKey
     val filmId: String = "",
-    val nameEn: String = "",
     val nameRu: String = "",
     val posterUrlPreview: String = "",
     val label: String = "",
@@ -28,18 +27,15 @@ data class MovieEntity(
         return MovieItem(
             id = this.filmId,
             nameRu = this.nameRu,
-            nameEn = this.nameEn,
             poster = this.posterUrlPreview
         )
     }
 
     companion object {
-        // TODO: will handle empty data in field
         fun fromMovieItemResponseFilm(film: MovieItemResponse.Film, query: String): MovieEntity {
             return MovieEntity(
                 filmId = film.filmId.toString(),
                 nameRu = film.nameRu,
-                nameEn = film.nameEn,
                 label = query,
                 posterUrlPreview = film.posterUrlPreview
             )

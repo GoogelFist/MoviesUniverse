@@ -12,6 +12,7 @@
     <color name="silver_chalice">#B0B0B0</color>
     <color name="spanish_gray">#969696</color>
 
+    <color name="coral_red">#FF4545</color>
 
     <!--  tabs bottom menu  -->
     <color name="checked_item_color">@color/black</color>
