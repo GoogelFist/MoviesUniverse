@@ -5,6 +5,8 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import com.example.moviesuniverse.R
 import com.example.moviesuniverse.databinding.MovieItemBinding
 import com.example.moviesuniverse.domain.models.MovieItem
 
@@ -13,7 +15,14 @@ class PagingMovieAdapter(private val onItemClickListener: (id: String) -> Unit) 
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         getItem(position)?.let { movieItem ->
-            holder.binding.tbMovieItem.text = movieItem.nameEn
+            holder.binding.tvMovieItemTitle.text = movieItem.nameRu
+
+            holder.binding.ivPoster.load(movieItem.poster) {
+                crossfade(true)
+                placeholder(R.drawable.image_placeholder)
+                error(R.drawable.image_error_placeholder)
+                allowHardware(false)
+            }
 
             holder.binding.root.setOnClickListener {
                 onItemClickListener.invoke(movieItem.id)

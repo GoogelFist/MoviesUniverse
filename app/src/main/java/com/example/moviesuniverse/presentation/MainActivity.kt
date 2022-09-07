@@ -11,7 +11,6 @@ import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 import org.koin.core.qualifier.named
 
 class MainActivity : AppCompatActivity() {
@@ -20,10 +19,11 @@ class MainActivity : AppCompatActivity() {
 
     private val router: Router by inject(qualifier = named(GLOBAL_QUALIFIER))
     private val navigatorHolder: NavigatorHolder by inject(qualifier = named(GLOBAL_QUALIFIER))
-    private val navigator: AppNavigator by inject(qualifier = named(GLOBAL_QUALIFIER)) {
-        parametersOf(
+    private val navigator: AppNavigator by lazy(LazyThreadSafetyMode.NONE) {
+        AppNavigator(
             this,
-            R.id.fragment_container
+            R.id.fragment_container,
+            supportFragmentManager
         )
     }
 

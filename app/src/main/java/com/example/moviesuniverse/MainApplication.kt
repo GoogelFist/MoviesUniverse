@@ -2,7 +2,7 @@ package com.example.moviesuniverse
 
 import android.app.Application
 import com.example.moviesuniverse.di.*
-import com.example.moviesuniverse.di.data.dataModule
+import com.example.moviesuniverse.di.data.moviesDataModule
 import com.example.moviesuniverse.di.data.retrofitModule
 import com.example.moviesuniverse.di.data.roomModule
 import org.koin.android.ext.koin.androidContext
@@ -22,7 +22,7 @@ class MainApplication : Application() {
                     applicationModule,
                     globalNavigationModule,
                     tabsNavigationModule,
-                    dataModule,
+                    moviesDataModule,
                     domainModule,
                     retrofitModule,
                     roomModule

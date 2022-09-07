@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="MaterialSnackbarTheme" parent="Widget.MaterialComponents.Snackbar">
+        <item name="android:background">@color/coral_red</item>
+        <item name="cornerRadius">0dp</item>
+        <item name="android:layout_margin">8dp</item>
+    </style>
+
+    <style name="MaterialSnackbarTextViewTheme" parent="Widget.MaterialComponents.Snackbar.TextView">
+        <item name="android:textAppearance">@style/Text.RobotoRegular.14</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:lineSpacingMultiplier">0</item>
+        <item name="android:lineSpacingExtra">20sp</item>
+    </style>
+
+</resources>

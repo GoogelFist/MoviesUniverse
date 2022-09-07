@@ -7,7 +7,17 @@
     <string name="staff_tab_title">Актеры</string>
 
     <!--  Main fragment  -->
-    <string name="main_title_text">Фильмы</string>
+    <string name="main_title_text">Главная</string>
     <string name="try_again_button">Обновить</string>
     <string name="main_load_error_text">Не удалось загрузить ленту\nОбновите экран или попробуйте позже</string>
+    <string name="snack_bar_error_text">Отсутствует соединение с интернетом</string>
+
+    <!--  Movie detail fragment  -->
+    <string name="detail_title_text">Главная</string>
+    <string name="error_screen_text">Не удалось загрузить информацию о фильме</string>
+    <string name="rating_title_movie_detail">Рейтинг:</string>
+    <string name="year_title_movie_detail">Год производства:</string>
+    <string name="length_title_movie_detail">Продолжительность:</string>
+    <string name="counties_title_movie_detail">Страны:</string>
+    <string name="genres_title_movie_detail">Жанры:</string>
 </resources>
