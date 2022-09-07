@@ -46,7 +46,7 @@ data class MovieDetailEntity(
             return MovieDetailEntity(
                 filmId = movieDetailResponse.kinopoiskId.toString(),
                 countries = formatCounties(movieDetailResponse),
-                description = formatDescription(movieDetailResponse),
+                description = movieDetailResponse.description,
                 filmLength = formatLength(movieDetailResponse),
                 genres = formatGenres(movieDetailResponse),
                 nameRu = movieDetailResponse.nameRu,
@@ -62,9 +62,6 @@ data class MovieDetailEntity(
 
         private fun formatLength(movieDetailResponse: MovieDetailResponse) =
             "${movieDetailResponse.filmLength } $LENGTH_FIELD_POSTFIX"
-
-        private fun formatDescription(movieDetailResponse: MovieDetailResponse) =
-            "\t\t${movieDetailResponse.description}"
 
         private fun formatGenres(movieDetailResponse: MovieDetailResponse) =
             movieDetailResponse.genres.joinToString(separator = GENRES_SEPARATOR) { it.genre }
