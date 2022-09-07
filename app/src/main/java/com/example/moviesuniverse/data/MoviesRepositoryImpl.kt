@@ -37,7 +37,6 @@ class MoviesRepositoryImpl(
         ).flow
     }
 
-    // TODO: will add cache and flow
     // TODO: will add update data in base by added date
     @OptIn(FlowPreview::class)
     override suspend fun getDetailMovie(id: String): Flow<ApiResult<MovieDetail>> {
@@ -50,15 +49,23 @@ class MoviesRepositoryImpl(
         }
     }
 
+    @OptIn(FlowPreview::class)
     private suspend fun getMovieDetailApiFlow(id: String): Flow<ApiResult<MovieDetail>> {
-        return remoteDataSource.getMovieDetail(id).map { response ->
+        return remoteDataSource.getMovieDetail(id).flatMapConcat { response ->
             when (response) {
-                is ApiResult.Error -> ApiResult.Error(response.error)
+                is ApiResult.Error -> flow { emit(ApiResult.Error(response.error)) }
                 is ApiResult.Success -> {
                     localDataSource.insertMovieDetail(response.movieDetailResponse)
-                    ApiResult.Success(
-                        response.movieDetailResponse.toMovieDetail()
-                    )
+
+                    flow {
+                        localDataSource.getMovieDetailById(id).map { daoResult ->
+                            if (daoResult is DaoResult.Exist) {
+                                ApiResult.Success(daoResult.item)
+                            } else {
+                                emit(ApiResult.Error(RuntimeException(EXCEPTION_MESSAGE)))
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -66,6 +73,8 @@ class MoviesRepositoryImpl(
 
     companion object {
         private const val PAGE_SIZE = 20
+
+        private const val EXCEPTION_MESSAGE = "Movie not exist in base after insert"
 
         private const val TYPE_TOP_250 = "TOP_250_BEST_FILMS"
     }
