@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -14,15 +15,13 @@ import com.example.moviesuniverse.R
 import com.example.moviesuniverse.databinding.MainFragmentBinding
 import com.example.moviesuniverse.di.GLOBAL_QUALIFIER
 import com.example.moviesuniverse.presentation.screens.Screens
-import com.example.moviesuniverse.presentation.screens.tabs.main.model.MainTabEvent
-import com.example.moviesuniverse.presentation.screens.tabs.main.model.MainTabState
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.qualifier.named
@@ -36,7 +35,7 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
     private val viewModel by viewModel<MainTabViewModel>()
 
     private val moviesAdapter: PagingMovieAdapter by lazy(LazyThreadSafetyMode.NONE) {
-        PagingMovieAdapter { id -> viewModel.obtainEvent(MainTabEvent.OnNavToDetailScreen(id)) }
+        PagingMovieAdapter { id -> router.navigateTo(Screens.detailMovie(id)) }
     }
 
     private val marginItemDecorator: MarginItemDecorator by lazy(LazyThreadSafetyMode.NONE) {
@@ -70,7 +69,6 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecycler()
-        configSwipeRefresh()
         observeViewModel()
         setupButtons()
     }
@@ -86,9 +84,9 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         binding.recyclerMain.adapter = null
         _binding = null
+        super.onDestroyView()
     }
 
     private fun setupRecycler() {
@@ -98,20 +96,24 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
         }
 
         moviesAdapter.addLoadStateListener { state ->
-            if (state.refresh is LoadState.Loading) {
-                viewModel.obtainEvent(MainTabEvent.OnLoading)
-            } else {
-                val errorState = when {
-                    state.append is LoadState.Error -> state.append as LoadState.Error
-                    state.prepend is LoadState.Error -> state.prepend as LoadState.Error
-                    state.refresh is LoadState.Error -> state.refresh as LoadState.Error
-                    else -> null
+            when (state.refresh) {
+                is LoadState.NotLoading -> {
+                    configDefaultState()
                 }
-                errorState?.let {
+
+                is LoadState.Loading -> {
                     if (isEmptyAdapter()) {
-                        viewModel.obtainEvent(MainTabEvent.OnEmpty)
+                        configLoadingState()
                     } else {
-                        viewModel.obtainEvent(MainTabEvent.OnRefreshError)
+                        configRefreshingState()
+                    }
+                }
+
+                is LoadState.Error -> {
+                    if (isEmptyAdapter()) {
+                        configEmptyState()
+                    } else {
+                        configRefreshErrorState()
                     }
                 }
             }
@@ -120,16 +122,6 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
 
     private fun isEmptyAdapter() = moviesAdapter.itemCount == 0
 
-    private fun configSwipeRefresh() {
-        binding.swipeRefreshLayout.apply {
-            setOnRefreshListener {
-                viewModel.obtainEvent(MainTabEvent.OnRefresh)
-                moviesAdapter.refresh()
-                viewModel.obtainEvent(MainTabEvent.OnDefault)
-            }
-        }
-    }
-
     private fun setupButtons() {
         binding.buttonTryAgain.setOnClickListener {
             moviesAdapter.retry()
@@ -137,20 +129,25 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
     }
 
     private fun observeViewModel() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.movieState
-                .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
-                .collectLatest { state ->
-                    when (state) {
-                        MainTabState.Loading -> configLoadingState()
-                        is MainTabState.Loaded -> configLoadedState(state)
-                        MainTabState.Empty -> configEmptyState()
-                        MainTabState.RefreshError -> configRefreshErrorState()
-                        MainTabState.Refreshing -> configRefreshingState()
-                        MainTabState.Default -> configDefaultState()
-                        is MainTabState.NavToDetailScreen -> configNavToDetailScreenState(state)
-                    }
-                }
+        viewModel.getMovieList()
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+            .onEach { movies ->
+                moviesAdapter.submitData(viewLifecycleOwner.lifecycle, movies)
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+    }
+
+    private fun configDefaultState() {
+
+        configSwipeRefresh { moviesAdapter.refresh() }
+
+        with(binding) {
+            progressBarMainScreen.isVisible = false
+            recyclerMain.isVisible = true
+
+            swipeRefreshLayout.isVisible = true
+            swipeRefreshLayout.isRefreshing = false
+
+            llMainErrorBlock.isVisible = false
         }
     }
 
@@ -165,19 +162,6 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
         }
     }
 
-    private fun configLoadedState(state: MainTabState.Loaded) {
-        with(binding) {
-            progressBarMainScreen.isVisible = false
-            recyclerMain.isVisible = true
-
-            swipeRefreshLayout.isVisible = true
-
-            llMainErrorBlock.isVisible = false
-        }
-
-        moviesAdapter.submitData(viewLifecycleOwner.lifecycle, state.movies)
-    }
-
     private fun configEmptyState() {
         with(binding) {
             progressBarMainScreen.isVisible = false
@@ -186,20 +170,6 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
             swipeRefreshLayout.isVisible = false
 
             llMainErrorBlock.isVisible = true
-        }
-    }
-
-    private fun configRefreshErrorState() {
-        showErrorSnackBar()
-
-        with(binding) {
-            progressBarMainScreen.isVisible = false
-            recyclerMain.isVisible = true
-
-            swipeRefreshLayout.isVisible = true
-            swipeRefreshLayout.isRefreshing = false
-
-            llMainErrorBlock.isVisible = false
         }
     }
 
@@ -215,7 +185,11 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
         }
     }
 
-    private fun configDefaultState() {
+    private fun configRefreshErrorState() {
+        showErrorSnackBar(R.string.snack_bar_error_text)
+
+        configSwipeRefresh { moviesAdapter.retry() }
+
         with(binding) {
             progressBarMainScreen.isVisible = false
             recyclerMain.isVisible = true
@@ -227,15 +201,20 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
         }
     }
 
-    private fun configNavToDetailScreenState(state: MainTabState.NavToDetailScreen) {
-        router.navigateTo(Screens.detailMovie(state.id))
-        viewModel.obtainEvent(MainTabEvent.OnDefault)
+    private fun configSwipeRefresh(action: () -> Unit) {
+        binding.swipeRefreshLayout.apply {
+            setOnRefreshListener {
+                action.invoke()
+            }
+        }
     }
 
-    private fun showErrorSnackBar() {
-        val bottomBar: BottomNavigationView = requireActivity().findViewById(R.id.bottom_navigation_view)
+    private fun showErrorSnackBar(@StringRes errorMessage: Int) {
+        val bottomBar: BottomNavigationView =
+            requireActivity().findViewById(R.id.bottom_navigation_view)
+
         Snackbar
-            .make(binding.root, R.string.snack_bar_error_text, Snackbar.LENGTH_LONG)
+            .make(binding.root, errorMessage, Snackbar.LENGTH_LONG)
             .setAnchorView(bottomBar)
             .show()
     }
