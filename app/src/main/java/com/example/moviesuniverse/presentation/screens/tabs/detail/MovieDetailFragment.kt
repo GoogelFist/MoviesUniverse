@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -53,7 +54,6 @@ class MovieDetailFragment : Fragment(R.layout.movie_detail_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         observeViewModel()
         init()
         configButtons()
@@ -89,6 +89,9 @@ class MovieDetailFragment : Fragment(R.layout.movie_detail_fragment) {
     private fun init() {
         val id = arguments?.getString(KEY_ID) ?: ""
         viewModel.obtainEvent(MovieDetailEvent.OnLoadMovie(id))
+
+        val title = arguments?.getInt(TITLE_KEY) ?: 0
+        binding.tvTitleDetail.setText(title)
     }
 
     private fun configButtons() {
@@ -145,11 +148,13 @@ class MovieDetailFragment : Fragment(R.layout.movie_detail_fragment) {
 
     companion object {
         private const val KEY_ID = "id"
+        private const val TITLE_KEY = "title"
 
-        fun newInstance(id: String): MovieDetailFragment {
+        fun newInstance(id: String, @StringRes title: Int): MovieDetailFragment {
             return MovieDetailFragment().apply {
                 arguments = Bundle().apply {
                     putString(KEY_ID, id)
+                    putInt(TITLE_KEY, title)
                 }
             }
         }

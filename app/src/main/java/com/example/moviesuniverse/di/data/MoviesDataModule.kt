@@ -1,7 +1,8 @@
 package com.example.moviesuniverse.di.data
 
-import com.example.moviesuniverse.data.MoviesRemoteMediator
 import com.example.moviesuniverse.data.MoviesRepositoryImpl
+import com.example.moviesuniverse.data.MoviesSearchRemoteMediator
+import com.example.moviesuniverse.data.MoviesTop250RemoteMediator
 import com.example.moviesuniverse.data.local.MoviesLocalDataSource
 import com.example.moviesuniverse.data.local.movies.MoviesDao
 import com.example.moviesuniverse.data.local.movies.RemoteKeysDao
@@ -14,13 +15,27 @@ import org.koin.dsl.module
 
 val moviesDataModule = module {
 
-    fun provideTop250MoviesRemoteMediator(
+    fun provideMoviesRemoteMediator(
         service: MoviesRetrofitService,
         moviesDao: MoviesDao,
         remoteKeysDao: RemoteKeysDao,
         query: String
-    ): MoviesRemoteMediator {
-        return MoviesRemoteMediator(
+    ): MoviesTop250RemoteMediator {
+        return MoviesTop250RemoteMediator(
+            moviesRetrofitService = service,
+            moviesDao = moviesDao,
+            remoteKeysDao = remoteKeysDao,
+            query = query
+        )
+    }
+
+    fun provideMoviesSearchRemoteMediator(
+        service: MoviesRetrofitService,
+        moviesDao: MoviesDao,
+        remoteKeysDao: RemoteKeysDao,
+        query: String
+    ): MoviesSearchRemoteMediator {
+        return MoviesSearchRemoteMediator(
             moviesRetrofitService = service,
             moviesDao = moviesDao,
             remoteKeysDao = remoteKeysDao,
@@ -40,8 +55,17 @@ val moviesDataModule = module {
         RoomDataSourceImpl(moviesDao = get(), moveDetailDao = get())
     }
 
-    single<MoviesRemoteMediator> { (query: String) ->
-        provideTop250MoviesRemoteMediator(
+    single<MoviesTop250RemoteMediator> { (query: String) ->
+        provideMoviesRemoteMediator(
+            service = get(),
+            moviesDao = get(),
+            remoteKeysDao = get(),
+            query = query
+        )
+    }
+
+    factory<MoviesSearchRemoteMediator> { (query: String) ->
+        provideMoviesSearchRemoteMediator(
             service = get(),
             moviesDao = get(),
             remoteKeysDao = get(),

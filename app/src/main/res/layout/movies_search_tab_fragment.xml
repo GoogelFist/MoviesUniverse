@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <TextView
+            android:id="@+id/tv_title_search_movies"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/movie_search_title_text"
+            android:textAppearance="@style/Text.MontserratSemiBold.24.Black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_layout_search"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:paddingVertical="9dp"
+            app:boxBackgroundColor="@color/search_box_background_color"
+            app:boxCornerRadiusBottomEnd="22dp"
+            app:boxCornerRadiusBottomStart="22dp"
+            app:boxCornerRadiusTopEnd="22dp"
+            app:boxCornerRadiusTopStart="22dp"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:endIconMode="clear_text"
+            app:hintEnabled="false"
+            app:hintTextAppearance="@style/Text.RobotoRegular.14.SpanishGrey"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title_search_movies"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_title_search_movies"
+            app:layout_constraintTop_toTopOf="@id/tv_title_search_movies"
+            app:startIconDrawable="@drawable/ic_movie_search_24">
+
+        <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/text_input_edit_text_search"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:drawablePadding="-10dp"
+                android:hint="@string/search_hint_text"
+                android:imeOptions="actionDone"
+                android:lines="1"
+                android:maxLength="255"
+                android:maxLines="1"
+                android:paddingTop="10dp"
+                android:paddingBottom="9dp"
+                android:singleLine="true"
+                android:textAppearance="@style/Text.RobotoRegular.14"
+                tools:text="er" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <ProgressBar
+            android:id="@+id/progress_bar_search_movies"
+            style="?android:progressBarStyleSmallTitle"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:indeterminateTint="@color/black"
+            android:padding="3dp"
+            android:scaleX="1.2"
+            android:scaleY="1.2"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_search_movies"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="visible"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_input_layout_search"
+            app:spanCount="2"
+            tools:listitem="@layout/movie_item" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_init_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="255dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_movie_search_24"
+                tools:ignore="ContentDescription" />
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center"
+                android:text="@string/init_screen_text"
+                android:textAppearance="@style/Text.RobotoRegular.14" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_empty_result_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="255dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_sad_face"
+                tools:ignore="ContentDescription" />
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center"
+                android:text="@string/empty_result_screen_text"
+                android:textAppearance="@style/Text.RobotoRegular.14" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <include
+            android:id="@+id/error_search_empty"
+            layout="@layout/error_search_empty_result"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

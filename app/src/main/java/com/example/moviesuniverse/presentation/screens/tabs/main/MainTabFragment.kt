@@ -35,7 +35,7 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
     private val viewModel by viewModel<MainTabViewModel>()
 
     private val moviesAdapter: PagingMovieAdapter by lazy(LazyThreadSafetyMode.NONE) {
-        PagingMovieAdapter { id -> router.navigateTo(Screens.detailMovie(id)) }
+        PagingMovieAdapter { id -> router.navigateTo(Screens.detailMovie(id, R.string.main_tab_title)) }
     }
 
     private val marginItemDecorator: MarginItemDecorator by lazy(LazyThreadSafetyMode.NONE) {
@@ -123,7 +123,7 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
     private fun isEmptyAdapter() = moviesAdapter.itemCount == 0
 
     private fun setupButtons() {
-        binding.buttonTryAgain.setOnClickListener {
+        binding.errorEmpty.buttonTryAgain.setOnClickListener {
             moviesAdapter.retry()
         }
     }
@@ -132,7 +132,7 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
         viewModel.getMovieList()
             .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
             .onEach { movies ->
-                moviesAdapter.submitData(viewLifecycleOwner.lifecycle, movies)
+                moviesAdapter.submitData(movies)
             }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
@@ -147,7 +147,7 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
             swipeRefreshLayout.isVisible = true
             swipeRefreshLayout.isRefreshing = false
 
-            llMainErrorBlock.isVisible = false
+            errorEmpty.errorBlock.isVisible = false
         }
     }
 
@@ -158,7 +158,7 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
 
             swipeRefreshLayout.isVisible = false
 
-            llMainErrorBlock.isVisible = false
+            errorEmpty.errorBlock.isVisible = false
         }
     }
 
@@ -169,7 +169,7 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
 
             swipeRefreshLayout.isVisible = false
 
-            llMainErrorBlock.isVisible = true
+            errorEmpty.errorBlock.isVisible = true
         }
     }
 
@@ -181,7 +181,7 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
             swipeRefreshLayout.isVisible = true
             swipeRefreshLayout.isRefreshing = true
 
-            llMainErrorBlock.isVisible = false
+            errorEmpty.errorBlock.isVisible = false
         }
     }
 
@@ -197,7 +197,7 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
             swipeRefreshLayout.isVisible = true
             swipeRefreshLayout.isRefreshing = false
 
-            llMainErrorBlock.isVisible = false
+            errorEmpty.errorBlock.isVisible = false
         }
     }
 

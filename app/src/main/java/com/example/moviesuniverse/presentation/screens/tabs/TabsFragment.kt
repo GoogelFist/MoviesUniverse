@@ -50,19 +50,19 @@ class TabsFragment : Fragment(R.layout.tabs_fragment) {
         super.onViewCreated(view, savedInstanceState)
 
         if (isEmptyContainer()) {
-            router.replaceScreen(Screens.main())
+            router.replaceScreen(Screens.mainTab())
         }
 
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.main_tab -> {
-                    router.replaceScreen(Screens.main())
+                    router.replaceScreen(Screens.mainTab())
                 }
                 R.id.movies_tab -> {
-                    router.replaceScreen(Screens.movies())
+                    router.replaceScreen(Screens.moviesSearchTab())
                 }
                 R.id.staff_tab -> {
-                    router.replaceScreen(Screens.staff())
+                    router.replaceScreen(Screens.staffTab())
                 }
             }
             true

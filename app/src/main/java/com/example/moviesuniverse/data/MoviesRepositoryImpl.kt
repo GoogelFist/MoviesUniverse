@@ -26,14 +26,25 @@ class MoviesRepositoryImpl(
 
     @OptIn(ExperimentalPagingApi::class)
     override fun getTop250Movies(): Flow<PagingData<MovieEntity>> {
-        val moviesRemoteMediator: MoviesRemoteMediator by inject(MoviesRemoteMediator::class.java) {
-            parametersOf(TYPE_TOP_250)
-        }
+        val moviesTop250RemoteMediator: MoviesTop250RemoteMediator
+                by inject(MoviesTop250RemoteMediator::class.java) { parametersOf(TYPE_TOP_250) }
 
         return Pager(
             config = PagingConfig(pageSize = PAGE_SIZE),
             pagingSourceFactory = { localDataSource.getMovieEntityPagingSource(TYPE_TOP_250) },
-            remoteMediator = moviesRemoteMediator
+            remoteMediator = moviesTop250RemoteMediator
+        ).flow
+    }
+
+    @OptIn(ExperimentalPagingApi::class)
+    override fun searchMovies(query: String): Flow<PagingData<MovieEntity>> {
+        val moviesSearchRemoteMediator: MoviesSearchRemoteMediator
+                by inject(MoviesSearchRemoteMediator::class.java) { parametersOf(query) }
+
+        return Pager(
+            config = PagingConfig(pageSize = PAGE_SIZE),
+            pagingSourceFactory = { localDataSource.getMovieEntityPagingSource(query) },
+            remoteMediator = moviesSearchRemoteMediator
         ).flow
     }
 
