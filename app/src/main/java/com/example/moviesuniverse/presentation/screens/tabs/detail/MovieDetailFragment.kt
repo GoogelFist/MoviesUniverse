@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import coil.load
+import com.bumptech.glide.Glide
 import com.example.moviesuniverse.R
 import com.example.moviesuniverse.databinding.MovieDetailFragmentBinding
 import com.example.moviesuniverse.di.GLOBAL_QUALIFIER
@@ -128,12 +128,14 @@ class MovieDetailFragment : Fragment(R.layout.movie_detail_fragment) {
 
     private fun bindMovieDetailData(state: MovieDetailState.Success) {
         with(binding.includeMovieDetailData) {
-            ivPosterMovieDetail.load(state.movieDetail.posterUrl) {
-                crossfade(true)
-                placeholder(R.drawable.image_placeholder)
-                error(R.drawable.image_error_placeholder)
-                allowHardware(false)
-            }
+
+            Glide
+                .with(this@MovieDetailFragment)
+                .load(state.movieDetail.posterUrl)
+                .centerCrop()
+                .placeholder(R.drawable.image_placeholder)
+                .error(R.drawable.image_error_placeholder)
+                .into(ivPosterMovieDetail)
 
             tvNameMovieDetail.text = state.movieDetail.nameRu
             tvYearMovieDetail.text = state.movieDetail.year

@@ -19,7 +19,7 @@
 
 - Data Base: Room
 
-- Image Loading: Coil
+- Image Loading: Glide
 	
 - Other: Paging 3
 
