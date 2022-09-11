@@ -16,7 +16,11 @@ data class MovieItemResponse(
         @SerialName("filmId")
         val filmId: Int = 0,
         @SerialName("nameRu")
-        val nameRu: String = "",
+        val nameRu: String?,
+        @SerialName("nameEn")
+        val nameEn: String?,
+        @SerialName("nameOriginal")
+        val nameOriginal: String = "",
         @SerialName("posterUrlPreview")
         val posterUrlPreview: String = ""
     )

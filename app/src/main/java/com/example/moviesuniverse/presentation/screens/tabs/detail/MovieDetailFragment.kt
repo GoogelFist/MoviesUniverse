@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.annotation.StringRes
+import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -14,6 +17,7 @@ import com.bumptech.glide.Glide
 import com.example.moviesuniverse.R
 import com.example.moviesuniverse.databinding.MovieDetailFragmentBinding
 import com.example.moviesuniverse.di.GLOBAL_QUALIFIER
+import com.example.moviesuniverse.domain.models.MovieDetail
 import com.example.moviesuniverse.presentation.screens.tabs.detail.model.MovieDetailEvent
 import com.example.moviesuniverse.presentation.screens.tabs.detail.model.MovieDetailState
 import com.github.terrakok.cicerone.NavigatorHolder
@@ -122,29 +126,58 @@ class MovieDetailFragment : Fragment(R.layout.movie_detail_fragment) {
             groupSuccessDetailMovie.isVisible = true
             groupErrorDetailMovie.isVisible = false
 
-            bindMovieDetailData(state)
+            bindMovieDetailData(state.movieDetail)
         }
     }
 
-    private fun bindMovieDetailData(state: MovieDetailState.Success) {
+    private fun bindMovieDetailData(movieDetail: MovieDetail) {
         with(binding.includeMovieDetailData) {
 
             Glide
                 .with(this@MovieDetailFragment)
-                .load(state.movieDetail.posterUrl)
+                .load(movieDetail.posterUrl)
                 .centerCrop()
                 .placeholder(R.drawable.image_placeholder)
                 .error(R.drawable.image_error_placeholder)
                 .into(ivPosterMovieDetail)
 
-            tvNameMovieDetail.text = state.movieDetail.nameRu
-            tvYearMovieDetail.text = state.movieDetail.year
-            tvCountiesMovieDetail.text = state.movieDetail.countries
-            tvSloganMovieDetail.text = state.movieDetail.slogan
-            tvGenresMovieDetail.text = state.movieDetail.genres
-            tvLengthMovieDetail.text = state.movieDetail.filmLength
-            tvRatingMovieDetail.text = state.movieDetail.ratingKinopoisk
-            tvDescriptionMovieDetail.text = state.movieDetail.description
+            checkEmptyField(
+                field = tvYearMovieDetail,
+                value = movieDetail.year,
+                block = llYearBlock
+            )
+            checkEmptyField(
+                field = tvCountiesMovieDetail,
+                value = movieDetail.countries,
+                block = llCountiesBlock
+            )
+            checkEmptyField(
+                field = tvGenresMovieDetail,
+                value = movieDetail.genres,
+                block = llGenresBlock
+            )
+            checkEmptyField(
+                field = tvLengthMovieDetail,
+                value = movieDetail.filmLength,
+                block = llLengthBlock
+            )
+            checkEmptyField(
+                field = tvRatingMovieDetail,
+                value = movieDetail.ratingKinopoisk,
+                block = llRatingBlock
+            )
+
+            tvNameMovieDetail.text = movieDetail.nameRu
+            tvSloganMovieDetail.text = movieDetail.slogan
+            tvDescriptionMovieDetail.text = movieDetail.description
+        }
+    }
+
+    private fun checkEmptyField(field: TextView, value: String, block: LinearLayoutCompat) {
+        if (value.isEmpty()) {
+            block.isGone = true
+        } else {
+            field.text = value
         }
     }
 

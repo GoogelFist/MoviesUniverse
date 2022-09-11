@@ -42,26 +42,28 @@ data class MovieDetailEntity(
 
     companion object {
 
-        fun fromMovieDetailResponse(movieDetailResponse: MovieDetailResponse): MovieDetailEntity {
+        fun fromMovieDetailResponse(response: MovieDetailResponse): MovieDetailEntity {
             return MovieDetailEntity(
-                filmId = movieDetailResponse.kinopoiskId.toString(),
-                countries = formatCounties(movieDetailResponse),
-                description = movieDetailResponse.description,
-                filmLength = formatLength(movieDetailResponse),
-                genres = formatGenres(movieDetailResponse),
-                nameRu = movieDetailResponse.nameRu,
-                posterUrl = movieDetailResponse.posterUrl,
-                ratingKinopoisk = movieDetailResponse.ratingKinopoisk.toString(),
-                slogan = movieDetailResponse.slogan,
-                year = formatYear(movieDetailResponse),
+                filmId = response.kinopoiskId,
+                countries = formatCounties(response),
+                description = response.description,
+                filmLength = formatLength(response),
+                genres = formatGenres(response),
+                nameRu = response.nameRu ?: response.nameEn ?: response.nameOriginal,
+                posterUrl = response.posterUrl,
+                ratingKinopoisk = response.ratingKinopoisk,
+                slogan = response.slogan,
+                year = formatYear(response),
             )
         }
 
         private fun formatYear(movieDetailResponse: MovieDetailResponse) =
             "${movieDetailResponse.year } $YEAR_FIELD_POSTFIX"
 
-        private fun formatLength(movieDetailResponse: MovieDetailResponse) =
-            "${movieDetailResponse.filmLength } $LENGTH_FIELD_POSTFIX"
+        private fun formatLength(movieDetailResponse: MovieDetailResponse): String {
+            if (movieDetailResponse.filmLength.isEmpty()) return ""
+            return "${movieDetailResponse.filmLength } $LENGTH_FIELD_POSTFIX"
+        }
 
         private fun formatGenres(movieDetailResponse: MovieDetailResponse) =
             movieDetailResponse.genres.joinToString(separator = GENRES_SEPARATOR) { it.genre }

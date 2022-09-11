@@ -5,6 +5,7 @@ import androidx.room.Index
 import com.example.moviesuniverse.data.remote.movies.models.MovieItemResponse
 import com.example.moviesuniverse.data.remote.movies.models.MovieSearchResponse
 import com.example.moviesuniverse.domain.models.MovieItem
+import kotlinx.serialization.SerialName
 
 
 @Entity(
@@ -18,6 +19,8 @@ import com.example.moviesuniverse.domain.models.MovieItem
 data class MovieEntity(
     val filmId: String = "",
     val nameRu: String = "",
+    val nameEn: String = "",
+    val nameOriginal: String = "",
     val posterUrlPreview: String = "",
     val label: String = "",
     val addedDate: Long = System.currentTimeMillis()
@@ -35,7 +38,7 @@ data class MovieEntity(
         fun fromMovieItemResponseFilm(film: MovieItemResponse.Film, query: String): MovieEntity {
             return MovieEntity(
                 filmId = film.filmId.toString(),
-                nameRu = film.nameRu,
+                nameRu = film.nameRu ?: film.nameEn ?: film.nameOriginal,
                 label = query,
                 posterUrlPreview = film.posterUrlPreview
             )
@@ -47,7 +50,7 @@ data class MovieEntity(
         ): MovieEntity {
             return MovieEntity(
                 filmId = item.filmId.toString(),
-                nameRu = item.nameRu,
+                nameRu = item.nameRu ?: item.nameEn ?: item.nameOriginal,
                 label = query,
                 posterUrlPreview = item.posterUrlPreview
             )
