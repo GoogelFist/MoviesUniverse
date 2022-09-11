@@ -10,5 +10,7 @@ interface MoviesRepository {
 
     fun getTop250Movies(): Flow<PagingData<MovieEntity>>
 
+    fun searchMovies(query: String): Flow<PagingData<MovieEntity>>
+
     suspend fun getDetailMovie(id: String): Flow<ApiResult<MovieDetail>>
 }

@@ -4,15 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.annotation.StringRes
+import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import coil.load
+import com.bumptech.glide.Glide
 import com.example.moviesuniverse.R
 import com.example.moviesuniverse.databinding.MovieDetailFragmentBinding
 import com.example.moviesuniverse.di.GLOBAL_QUALIFIER
+import com.example.moviesuniverse.domain.models.MovieDetail
 import com.example.moviesuniverse.presentation.screens.tabs.detail.model.MovieDetailEvent
 import com.example.moviesuniverse.presentation.screens.tabs.detail.model.MovieDetailState
 import com.github.terrakok.cicerone.NavigatorHolder
@@ -53,7 +58,6 @@ class MovieDetailFragment : Fragment(R.layout.movie_detail_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         observeViewModel()
         init()
         configButtons()
@@ -89,6 +93,9 @@ class MovieDetailFragment : Fragment(R.layout.movie_detail_fragment) {
     private fun init() {
         val id = arguments?.getString(KEY_ID) ?: ""
         viewModel.obtainEvent(MovieDetailEvent.OnLoadMovie(id))
+
+        val title = arguments?.getInt(TITLE_KEY) ?: 0
+        binding.tvTitleDetail.setText(title)
     }
 
     private fun configButtons() {
@@ -119,37 +126,70 @@ class MovieDetailFragment : Fragment(R.layout.movie_detail_fragment) {
             groupSuccessDetailMovie.isVisible = true
             groupErrorDetailMovie.isVisible = false
 
-            bindMovieDetailData(state)
+            bindMovieDetailData(state.movieDetail)
         }
     }
 
-    private fun bindMovieDetailData(state: MovieDetailState.Success) {
+    private fun bindMovieDetailData(movieDetail: MovieDetail) {
         with(binding.includeMovieDetailData) {
-            ivPosterMovieDetail.load(state.movieDetail.posterUrl) {
-                crossfade(true)
-                placeholder(R.drawable.image_placeholder)
-                error(R.drawable.image_error_placeholder)
-                allowHardware(false)
-            }
 
-            tvNameMovieDetail.text = state.movieDetail.nameRu
-            tvYearMovieDetail.text = state.movieDetail.year
-            tvCountiesMovieDetail.text = state.movieDetail.countries
-            tvSloganMovieDetail.text = state.movieDetail.slogan
-            tvGenresMovieDetail.text = state.movieDetail.genres
-            tvLengthMovieDetail.text = state.movieDetail.filmLength
-            tvRatingMovieDetail.text = state.movieDetail.ratingKinopoisk
-            tvDescriptionMovieDetail.text = state.movieDetail.description
+            Glide
+                .with(this@MovieDetailFragment)
+                .load(movieDetail.posterUrl)
+                .centerCrop()
+                .placeholder(R.drawable.image_placeholder)
+                .error(R.drawable.image_error_placeholder)
+                .into(ivPosterMovieDetail)
+
+            checkEmptyField(
+                field = tvYearMovieDetail,
+                value = movieDetail.year,
+                block = llYearBlock
+            )
+            checkEmptyField(
+                field = tvCountiesMovieDetail,
+                value = movieDetail.countries,
+                block = llCountiesBlock
+            )
+            checkEmptyField(
+                field = tvGenresMovieDetail,
+                value = movieDetail.genres,
+                block = llGenresBlock
+            )
+            checkEmptyField(
+                field = tvLengthMovieDetail,
+                value = movieDetail.filmLength,
+                block = llLengthBlock
+            )
+            checkEmptyField(
+                field = tvRatingMovieDetail,
+                value = movieDetail.ratingKinopoisk,
+                block = llRatingBlock
+            )
+
+            tvNameMovieDetail.text = movieDetail.nameRu
+            tvSloganMovieDetail.text = movieDetail.slogan
+            tvDescriptionMovieDetail.text = movieDetail.description
+        }
+    }
+
+    private fun checkEmptyField(field: TextView, value: String, block: LinearLayoutCompat) {
+        if (value.isEmpty()) {
+            block.isGone = true
+        } else {
+            field.text = value
         }
     }
 
     companion object {
         private const val KEY_ID = "id"
+        private const val TITLE_KEY = "title"
 
-        fun newInstance(id: String): MovieDetailFragment {
+        fun newInstance(id: String, @StringRes title: Int): MovieDetailFragment {
             return MovieDetailFragment().apply {
                 arguments = Bundle().apply {
                     putString(KEY_ID, id)
+                    putInt(TITLE_KEY, title)
                 }
             }
         }

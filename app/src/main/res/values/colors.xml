@@ -11,11 +11,14 @@
     <color name="transparent">#00000000</color>
     <color name="silver_chalice">#B0B0B0</color>
     <color name="spanish_gray">#969696</color>
+    <color name="wild_sand">#F5F5F5</color>
 
     <color name="coral_red">#FF4545</color>
 
     <!--  tabs bottom menu  -->
     <color name="checked_item_color">@color/black</color>
     <color name="unchecked_item_color">@color/silver_chalice</color>
+
+    <color name="search_box_background_color">@color/wild_sand</color>
 
 </resources>

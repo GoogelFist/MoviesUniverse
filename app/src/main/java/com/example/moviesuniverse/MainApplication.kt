@@ -1,10 +1,13 @@
 package com.example.moviesuniverse
 
 import android.app.Application
-import com.example.moviesuniverse.di.*
+import com.example.moviesuniverse.di.applicationModule
 import com.example.moviesuniverse.di.data.moviesDataModule
 import com.example.moviesuniverse.di.data.retrofitModule
 import com.example.moviesuniverse.di.data.roomModule
+import com.example.moviesuniverse.di.domainModule
+import com.example.moviesuniverse.di.globalNavigationModule
+import com.example.moviesuniverse.di.tabsNavigationModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin

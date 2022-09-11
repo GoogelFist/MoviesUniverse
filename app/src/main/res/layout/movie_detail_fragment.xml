@@ -19,10 +19,10 @@
             tools:ignore="ContentDescription" />
 
     <TextView
-            android:id="@+id/tv_title_main"
+            android:id="@+id/tv_title_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/detail_title_text"
+            tools:text="@string/detail_title_text"
             android:textAppearance="@style/Text.MontserratSemiBold.24.Black"
             app:layout_constraintBottom_toBottomOf="@id/iv_back_button"
             app:layout_constraintStart_toEndOf="@id/iv_back_button"
@@ -32,6 +32,7 @@
             android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

@@ -12,7 +12,7 @@ import com.example.moviesuniverse.data.remote.movies.MoviesRetrofitService
 import retrofit2.HttpException
 
 @OptIn(ExperimentalPagingApi::class)
-class MoviesRemoteMediator(
+class MoviesTop250RemoteMediator(
     private val moviesRetrofitService: MoviesRetrofitService,
     private val moviesDao: MoviesDao,
     private val remoteKeysDao: RemoteKeysDao,

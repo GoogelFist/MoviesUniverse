@@ -53,57 +53,13 @@
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
-    <FrameLayout
-            android:id="@+id/ll_main_error_block"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            android:visibility="gone"
+    <include
+            android:id="@+id/error_empty"
+            layout="@layout/error_search_empty_result"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="vertical">
-
-            <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="12dp"
-                    android:src="@drawable/ic_sad_face"
-                    tools:ignore="ContentDescription" />
-
-            <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/main_load_error_text"
-                    android:textAppearance="@style/Text.RobotoRegular.14.Black" />
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-        <TextView
-                android:id="@+id/button_try_again"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_gravity="bottom"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="20dp"
-                android:background="@color/black"
-                android:foreground="?android:selectableItemBackground"
-                android:gravity="center"
-                android:text="@string/try_again_button"
-                android:textAppearance="@style/Text.RobotoRegular.14"
-                android:textColor="@color/white"
-                android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-    </FrameLayout>
+            app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

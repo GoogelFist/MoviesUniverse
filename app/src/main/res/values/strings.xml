@@ -20,4 +20,11 @@
     <string name="length_title_movie_detail">Продолжительность:</string>
     <string name="counties_title_movie_detail">Страны:</string>
     <string name="genres_title_movie_detail">Жанры:</string>
+
+    <!--  Movie search fragment  -->
+    <string name="movie_search_title_text">Фильмы</string>
+    <string name="search_hint_text">Поиск</string>
+    <string name="init_screen_text">Введите ваш запрос</string>
+    <string name="empty_result_screen_text">По этому запросу нет результатов,\nпопробуйте другой запрос</string>
+
 </resources>
