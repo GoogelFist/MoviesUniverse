@@ -7,6 +7,8 @@ import androidx.paging.PagingData
 import com.example.moviesuniverse.data.local.DaoResult
 import com.example.moviesuniverse.data.local.MoviesLocalDataSource
 import com.example.moviesuniverse.data.local.movies.models.MovieEntity
+import com.example.moviesuniverse.data.paging.MoviesSearchRemoteMediator
+import com.example.moviesuniverse.data.paging.MoviesTop250RemoteMediator
 import com.example.moviesuniverse.data.remote.ApiResult
 import com.example.moviesuniverse.data.remote.MoviesRemoteDataSource
 import com.example.moviesuniverse.domain.MoviesRepository

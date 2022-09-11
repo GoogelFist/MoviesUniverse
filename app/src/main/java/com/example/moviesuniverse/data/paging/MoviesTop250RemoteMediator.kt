@@ -1,4 +1,4 @@
-package com.example.moviesuniverse.data
+package com.example.moviesuniverse.data.paging
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
@@ -12,7 +12,7 @@ import com.example.moviesuniverse.data.remote.movies.MoviesRetrofitService
 import retrofit2.HttpException
 
 @OptIn(ExperimentalPagingApi::class)
-class MoviesSearchRemoteMediator(
+class MoviesTop250RemoteMediator(
     private val moviesRetrofitService: MoviesRetrofitService,
     private val moviesDao: MoviesDao,
     private val remoteKeysDao: RemoteKeysDao,
@@ -50,7 +50,7 @@ class MoviesSearchRemoteMediator(
                 }
             }
 
-            val movieResponse = loadKey?.let { moviesRetrofitService.searchMovies(keyword = query, page = it) }
+            val movieResponse = loadKey?.let { moviesRetrofitService.getTop250MovieList(page = it) }
 
             var items = emptyList<MovieEntity>()
             var totalPages = 0
@@ -58,8 +58,8 @@ class MoviesSearchRemoteMediator(
             movieResponse?.let { response ->
                 if (response.isSuccessful) {
                     response.body()?.let { body ->
-                        items = body.items.map { MovieEntity.fromMovieSearchResponseItem(it, query) }
-                        totalPages = body.totalPages
+                        items = body.films.map { MovieEntity.fromMovieItemResponseFilm(it, query) }
+                        totalPages = body.pagesCount
                     }
                 } else {
                     return MediatorResult.Error(HttpException(response))
