@@ -12,12 +12,12 @@ import com.example.moviesuniverse.R
 import com.example.moviesuniverse.databinding.MovieStaffFragmentBinding
 import com.example.moviesuniverse.di.GLOBAL_QUALIFIER
 import com.example.moviesuniverse.presentation.screens.Screens
-import com.example.moviesuniverse.presentation.screens.tabs.main.MarginItemDecorator
 import com.example.moviesuniverse.presentation.screens.tabs.sraff.model.MovieStaffEvent
 import com.example.moviesuniverse.presentation.screens.tabs.sraff.model.MovieStaffState
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.AppNavigator
+import com.google.android.material.divider.MaterialDividerItemDecoration
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.android.ext.android.inject
@@ -32,6 +32,7 @@ class MovieStaffFragment : Fragment(R.layout.movie_staff_fragment) {
 
     private val viewModel by viewModel<MovieStaffViewModel>()
 
+    // TODO:
     private val movieStaffAdapter: MovieStaffAdapter by lazy(LazyThreadSafetyMode.NONE) {
         MovieStaffAdapter { id -> router.navigateTo(Screens.movieStaff(id)) }
     }
@@ -40,12 +41,8 @@ class MovieStaffFragment : Fragment(R.layout.movie_staff_fragment) {
         arguments?.getString(KEY_ID) ?: ""
     }
 
-    private val marginItemDecorator: MarginItemDecorator by lazy(LazyThreadSafetyMode.NONE) {
-        MarginItemDecorator(
-            verticalMargin = R.dimen.item_decorator_vertical_margin,
-            horizontalMargin = R.dimen.item_decorator_horizontal_margin,
-            spanCount = SPAN_COUNT
-        )
+    private val dividerItemDecoration: MaterialDividerItemDecoration by lazy(LazyThreadSafetyMode.NONE) {
+        MaterialDividerItemDecoration(requireContext(), MaterialDividerItemDecoration.VERTICAL)
     }
 
     private val router: Router by inject(qualifier = named(GLOBAL_QUALIFIER))
@@ -95,7 +92,16 @@ class MovieStaffFragment : Fragment(R.layout.movie_staff_fragment) {
     private fun setupRecycler() {
         binding.recyclerMovieStaff.apply {
             adapter = movieStaffAdapter
-            addItemDecoration(marginItemDecorator)
+
+            dividerItemDecoration.apply {
+                setDividerColorResource(requireContext(), R.color.transparent)
+                setDividerThicknessResource(
+                    requireContext(),
+                    R.dimen.item_decorator_vertical_margin
+                )
+            }
+
+            addItemDecoration(dividerItemDecoration)
         }
     }
 

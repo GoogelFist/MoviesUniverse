@@ -9,5 +9,5 @@ interface MoviesStaffRepository {
 
     suspend fun getMovieStaff(movieId: String): Flow<ApiResult<List<MovieStaffItem>>>
 
-    suspend fun getStuffDetail(staffId: String): Flow<ApiResult<MovieStaffDetail>>
+    suspend fun getStaffDetail(staffId: String): Flow<ApiResult<MovieStaffDetail>>
 }

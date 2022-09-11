@@ -1,6 +1,7 @@
 package com.example.moviesuniverse.di.data
 
 import com.example.moviesuniverse.data.remote.movies.MoviesRetrofitService
+import com.example.moviesuniverse.data.remote.staff.MoviesStaffRetrofitService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
@@ -76,10 +77,6 @@ val retrofitModule = module {
             .build()
     }
 
-    fun provideMovieRetrofitService(retrofit: Retrofit): MoviesRetrofitService {
-        return retrofit.create(MoviesRetrofitService::class.java)
-    }
-
     single<HttpLoggingInterceptor> { provideHttpLoggingInterceptor() }
     single<Interceptor>(named(APP_INTERCEPTOR_QUALIFIER)) { provideAppInterceptor() }
     single<OkHttpClient> {
@@ -90,5 +87,17 @@ val retrofitModule = module {
     }
     single<Converter.Factory> { provideConverterFactory() }
     single<Retrofit> { provideRetrofit(client = get(), converterFactory = get()) }
+
+
+    // TODO: will split
+    fun provideMovieRetrofitService(retrofit: Retrofit): MoviesRetrofitService {
+        return retrofit.create(MoviesRetrofitService::class.java)
+    }
+
+    fun provideMovieStaffRetrofitService(retrofit: Retrofit): MoviesStaffRetrofitService {
+        return retrofit.create(MoviesStaffRetrofitService::class.java)
+    }
+
     single<MoviesRetrofitService> { provideMovieRetrofitService(retrofit = get()) }
+    single<MoviesStaffRetrofitService> {provideMovieStaffRetrofitService(retrofit = get())}
 }
