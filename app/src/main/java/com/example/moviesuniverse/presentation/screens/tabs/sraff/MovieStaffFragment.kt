@@ -1,0 +1,148 @@
+package com.example.moviesuniverse.presentation.screens.tabs.sraff
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import com.example.moviesuniverse.R
+import com.example.moviesuniverse.databinding.MovieStaffFragmentBinding
+import com.example.moviesuniverse.di.GLOBAL_QUALIFIER
+import com.example.moviesuniverse.presentation.screens.Screens
+import com.example.moviesuniverse.presentation.screens.tabs.main.MarginItemDecorator
+import com.example.moviesuniverse.presentation.screens.tabs.sraff.model.MovieStaffEvent
+import com.example.moviesuniverse.presentation.screens.tabs.sraff.model.MovieStaffState
+import com.github.terrakok.cicerone.NavigatorHolder
+import com.github.terrakok.cicerone.Router
+import com.github.terrakok.cicerone.androidx.AppNavigator
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.qualifier.named
+
+class MovieStaffFragment : Fragment(R.layout.movie_staff_fragment) {
+
+    private var _binding: MovieStaffFragmentBinding? = null
+    private val binding: MovieStaffFragmentBinding
+        get() = _binding!!
+
+    private val viewModel by viewModel<MovieStaffViewModel>()
+
+    private val movieStaffAdapter: MovieStaffAdapter by lazy(LazyThreadSafetyMode.NONE) {
+        MovieStaffAdapter { id -> router.navigateTo(Screens.movieStaff(id)) }
+    }
+
+    private val movieId: String by lazy(LazyThreadSafetyMode.NONE) {
+        arguments?.getString(KEY_ID) ?: ""
+    }
+
+    private val marginItemDecorator: MarginItemDecorator by lazy(LazyThreadSafetyMode.NONE) {
+        MarginItemDecorator(
+            verticalMargin = R.dimen.item_decorator_vertical_margin,
+            horizontalMargin = R.dimen.item_decorator_horizontal_margin,
+            spanCount = SPAN_COUNT
+        )
+    }
+
+    private val router: Router by inject(qualifier = named(GLOBAL_QUALIFIER))
+    private val navigatorHolder: NavigatorHolder by inject(qualifier = named(GLOBAL_QUALIFIER))
+    private val navigator: AppNavigator by lazy(LazyThreadSafetyMode.NONE) {
+        AppNavigator(
+            requireActivity(),
+            R.id.fragment_container,
+            requireActivity().supportFragmentManager
+        )
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = MovieStaffFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.obtainEvent(MovieStaffEvent.OnLoadMovieStaff(movieId))
+        setupRecycler()
+        observeViewModel()
+        setupButtons()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        navigatorHolder.setNavigator(navigator)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        navigatorHolder.removeNavigator()
+    }
+
+    override fun onDestroyView() {
+        binding.recyclerMovieStaff.adapter = null
+        _binding = null
+        super.onDestroyView()
+    }
+
+    private fun setupRecycler() {
+        binding.recyclerMovieStaff.apply {
+            adapter = movieStaffAdapter
+            addItemDecoration(marginItemDecorator)
+        }
+    }
+
+    private fun observeViewModel() {
+        viewModel.moveStaffState
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+            .onEach { state ->
+                when (state) {
+                    MovieStaffState.Loading -> setupLoadingState()
+                    is MovieStaffState.Error -> setupErrorState()
+                    is MovieStaffState.Success -> setupSuccessState(state)
+                }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+    }
+
+    // TODO:
+    private fun setupLoadingState() {
+
+    }
+
+    // TODO:
+    private fun setupErrorState() {
+    }
+
+    // TODO:
+    private fun setupSuccessState(state: MovieStaffState.Success) {
+        movieStaffAdapter.submitList(state.movieStaff)
+    }
+
+    // TODO:
+    private fun setupButtons() {
+        binding.ivMovieStaffBackButton.setOnClickListener {
+            router.exit()
+        }
+    }
+
+    companion object {
+        private const val SPAN_COUNT = 2
+
+        private const val KEY_ID = "id"
+
+        fun newInstance(id: String): MovieStaffFragment {
+            return MovieStaffFragment().apply {
+                arguments = Bundle().apply {
+                    putString(KEY_ID, id)
+                }
+            }
+        }
+    }
+}

@@ -14,6 +14,7 @@
 
     <!--  Movie detail fragment  -->
     <string name="detail_title_text">Главная</string>
+    <string name="to_movie_staff_title">Создатели</string>
     <string name="error_screen_text">Не удалось загрузить информацию о фильме</string>
     <string name="rating_title_movie_detail">Рейтинг:</string>
     <string name="year_title_movie_detail">Год производства:</string>
@@ -27,4 +28,6 @@
     <string name="init_screen_text">Введите ваш запрос</string>
     <string name="empty_result_screen_text">По этому запросу нет результатов,\nпопробуйте другой запрос</string>
 
+    <!--  Movie staff fragment  -->
+    <string name="movie_staff_title_text">О фильме</string>
 </resources>

@@ -61,9 +61,6 @@ class TabsFragment : Fragment(R.layout.tabs_fragment) {
                 R.id.movies_tab -> {
                     router.replaceScreen(Screens.moviesSearchTab())
                 }
-                R.id.staff_tab -> {
-                    router.replaceScreen(Screens.staffTab())
-                }
             }
             true
         }

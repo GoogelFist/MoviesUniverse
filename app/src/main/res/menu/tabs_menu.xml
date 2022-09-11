@@ -8,9 +8,4 @@
             android:id="@+id/movies_tab"
             android:icon="@drawable/ic_movie_search_24"
             android:title="@string/movies_tab_title" />
-
-    <item
-            android:id="@+id/staff_tab"
-            android:icon="@drawable/ic_staff_search_24"
-            android:title="@string/staff_tab_title" />
 </menu>

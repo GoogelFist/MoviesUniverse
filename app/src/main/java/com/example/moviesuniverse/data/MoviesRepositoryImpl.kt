@@ -66,7 +66,7 @@ class MoviesRepositoryImpl(
             when (response) {
                 is ApiResult.Error -> flow { emit(ApiResult.Error(response.error)) }
                 is ApiResult.Success -> {
-                    localDataSource.insertMovieDetail(response.movieDetailResponse)
+                    localDataSource.insertMovieDetail(response.data)
 
                     flow {
                         localDataSource.getMovieDetailById(id).map { daoResult ->

@@ -18,6 +18,7 @@ import com.example.moviesuniverse.R
 import com.example.moviesuniverse.databinding.MovieDetailFragmentBinding
 import com.example.moviesuniverse.di.GLOBAL_QUALIFIER
 import com.example.moviesuniverse.domain.models.MovieDetail
+import com.example.moviesuniverse.presentation.screens.Screens
 import com.example.moviesuniverse.presentation.screens.tabs.detail.model.MovieDetailEvent
 import com.example.moviesuniverse.presentation.screens.tabs.detail.model.MovieDetailState
 import com.github.terrakok.cicerone.NavigatorHolder
@@ -45,6 +46,10 @@ class MovieDetailFragment : Fragment(R.layout.movie_detail_fragment) {
             R.id.fragment_container,
             requireActivity().supportFragmentManager
         )
+    }
+
+    private val movieId: String by lazy(LazyThreadSafetyMode.NONE) {
+        arguments?.getString(KEY_ID) ?: ""
     }
 
     override fun onCreateView(
@@ -91,16 +96,15 @@ class MovieDetailFragment : Fragment(R.layout.movie_detail_fragment) {
     }
 
     private fun init() {
-        val id = arguments?.getString(KEY_ID) ?: ""
-        viewModel.obtainEvent(MovieDetailEvent.OnLoadMovie(id))
+        viewModel.obtainEvent(MovieDetailEvent.OnLoadMovie(movieId))
 
-        val title = arguments?.getInt(TITLE_KEY) ?: 0
-        binding.tvTitleDetail.setText(title)
+        arguments?.getInt(TITLE_KEY)?.let { title -> binding.tvTitleDetail.setText(title) }
     }
 
     private fun configButtons() {
-        binding.ivBackButton.setOnClickListener {
-            router.exit()
+        with(binding) {
+            ivBackButton.setOnClickListener { router.exit() }
+            ivToMovieStaffButton.setOnClickListener { router.navigateTo(Screens.movieStaff(movieId)) }
         }
     }
 
