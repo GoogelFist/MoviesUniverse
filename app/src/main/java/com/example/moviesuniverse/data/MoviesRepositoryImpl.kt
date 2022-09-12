@@ -55,7 +55,7 @@ class MoviesRepositoryImpl(
     override suspend fun getDetailMovie(id: String): Flow<ApiResult<MovieDetail>> {
         return localDataSource.getMovieDetailById(id).flatMapConcat { daoResult ->
             if (daoResult is DaoResult.Exist) {
-                flow { emit(ApiResult.Success(daoResult.item)) }
+                flow { emit(ApiResult.Success(daoResult.data)) }
             } else {
                 getMovieDetailApiFlow(id)
             }
@@ -73,7 +73,7 @@ class MoviesRepositoryImpl(
                     flow {
                         localDataSource.getMovieDetailById(id).map { daoResult ->
                             if (daoResult is DaoResult.Exist) {
-                                ApiResult.Success(daoResult.item)
+                                ApiResult.Success(daoResult.data)
                             } else {
                                 emit(ApiResult.Error(RuntimeException(EXCEPTION_MESSAGE)))
                             }

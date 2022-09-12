@@ -21,6 +21,22 @@
         <item name="android:fontFamily">@font/roboto_regular</item>
     </style>
 
+    <style name="Text.RobotoRegular.18">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="Text.RobotoRegular.18.Black">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="Text.RobotoRegular.16">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Text.RobotoRegular.16.SpanishGrey">
+        <item name="android:textColor">@color/spanish_gray</item>
+    </style>
+
     <style name="Text.RobotoRegular.14">
         <item name="android:textSize">14sp</item>
     </style>

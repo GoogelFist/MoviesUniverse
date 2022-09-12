@@ -1,7 +1,6 @@
 package com.example.moviesuniverse.data.remote.staff.model
 
 
-import com.example.moviesuniverse.domain.models.MovieStaffItem
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -22,14 +21,4 @@ data class MovieStaffResponse(
     val professionText: String = "",
     @SerialName("staffId")
     val staffId: String = ""
-) {
-
-    // TODO:  
-    fun toMovieStaffItem(): MovieStaffItem {
-        return MovieStaffItem(
-            id = this.staffId,
-            nameRu = this.nameRu ?: this.nameEn,
-            posterUrl = this.posterUrl,
-        )
-    }
-}
+)
