@@ -13,7 +13,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import com.bumptech.glide.Glide
+import coil.load
+import coil.transform.RoundedCornersTransformation
 import com.example.moviesuniverse.R
 import com.example.moviesuniverse.databinding.MovieDetailFragmentBinding
 import com.example.moviesuniverse.di.GLOBAL_QUALIFIER
@@ -137,13 +138,15 @@ class MovieDetailFragment : Fragment(R.layout.movie_detail_fragment) {
     private fun bindMovieDetailData(movieDetail: MovieDetail) {
         with(binding.includeMovieDetailData) {
 
-            Glide
-                .with(this@MovieDetailFragment)
-                .load(movieDetail.posterUrl)
-                .centerCrop()
-                .placeholder(R.drawable.image_placeholder)
-                .error(R.drawable.image_error_placeholder)
-                .into(ivPosterMovieDetail)
+            val cornerRadius = requireActivity()
+                .resources.getDimension(R.dimen.movie_detail_round_corner).toInt()
+
+            ivPosterMovieDetail.load(movieDetail.posterUrl) {
+                crossfade(true)
+                transformations(RoundedCornersTransformation(cornerRadius.toFloat()))
+                placeholder(R.drawable.image_placeholder)
+                error(R.drawable.image_error_placeholder)
+            }
 
             checkEmptyField(
                 field = tvYearMovieDetail,

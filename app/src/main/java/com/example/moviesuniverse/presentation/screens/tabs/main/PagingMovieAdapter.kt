@@ -5,7 +5,8 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import coil.load
+import coil.transform.RoundedCornersTransformation
 import com.example.moviesuniverse.R
 import com.example.moviesuniverse.databinding.MovieItemBinding
 import com.example.moviesuniverse.domain.models.MovieItem
@@ -34,14 +35,15 @@ class PagingMovieAdapter(private val onItemClickListener: (id: String) -> Unit) 
             holder.binding.tvMovieItemTitle.text = movieItem.nameRu
 
             val context = holder.binding.root.context
+            val cornerRadius = context
+                .resources.getDimension(R.dimen.movie_item_round_corner).toInt()
 
-            Glide
-                .with(context)
-                .load(movieItem.poster)
-                .centerCrop()
-                .placeholder(R.drawable.image_placeholder)
-                .error(R.drawable.image_error_placeholder)
-                .into(holder.binding.ivPoster)
+            holder.binding.ivPoster.load(movieItem.poster) {
+                crossfade(true)
+                transformations(RoundedCornersTransformation(cornerRadius.toFloat()))
+                placeholder(R.drawable.image_placeholder)
+                error(R.drawable.image_error_placeholder)
+            }
         }
     }
 

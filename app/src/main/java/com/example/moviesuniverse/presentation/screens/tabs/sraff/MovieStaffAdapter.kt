@@ -5,9 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterInside
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import coil.load
+import coil.transform.RoundedCornersTransformation
 import com.example.moviesuniverse.R
 import com.example.moviesuniverse.databinding.MovieStaffItemBinding
 import com.example.moviesuniverse.domain.models.MovieStaffItem
@@ -43,14 +42,12 @@ class MovieStaffAdapter(private val onItemClickListener: (id: String) -> Unit) :
             val cornerRadius = context
                 .resources.getDimension(R.dimen.movie_staff_item_round_corner).toInt()
 
-            Glide
-                .with(context)
-                .load(movieStaffItem.posterUrl)
-                .centerCrop()
-                .transform(CenterInside(), RoundedCorners(cornerRadius))
-                .placeholder(R.drawable.image_placeholder)
-                .error(R.drawable.image_error_placeholder)
-                .into(holder.binding.ivMovieStaffItemPoster)
+            holder.binding.ivMovieStaffItemPoster.load(movieStaffItem.posterUrl) {
+                crossfade(true)
+                transformations(RoundedCornersTransformation(cornerRadius.toFloat()))
+                placeholder(R.drawable.image_placeholder)
+                error(R.drawable.image_error_placeholder)
+            }
         }
     }
 
