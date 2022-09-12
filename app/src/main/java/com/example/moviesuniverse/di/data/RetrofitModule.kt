@@ -89,7 +89,6 @@ val retrofitModule = module {
     single<Retrofit> { provideRetrofit(client = get(), converterFactory = get()) }
 
 
-    // TODO: will split
     fun provideMovieRetrofitService(retrofit: Retrofit): MoviesRetrofitService {
         return retrofit.create(MoviesRetrofitService::class.java)
     }

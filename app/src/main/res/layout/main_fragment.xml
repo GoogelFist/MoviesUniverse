@@ -56,7 +56,7 @@
 
     <include
             android:id="@+id/error_empty"
-            layout="@layout/error_search_empty_result"
+            layout="@layout/error_empty_result"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintEnd_toStartOf="parent"

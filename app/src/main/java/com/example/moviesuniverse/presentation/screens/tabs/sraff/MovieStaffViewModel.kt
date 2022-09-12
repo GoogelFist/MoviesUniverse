@@ -14,7 +14,6 @@ import kotlinx.coroutines.launch
 class MovieStaffViewModel(private val loadMovieStaffUseCase: LoadMovieStaffUseCase) : ViewModel(),
     EventHandler<MovieStaffEvent> {
 
-
     private val _moveStaffState = MutableSharedFlow<MovieStaffState>(
         replay = 1,
         onBufferOverflow = BufferOverflow.DROP_LATEST

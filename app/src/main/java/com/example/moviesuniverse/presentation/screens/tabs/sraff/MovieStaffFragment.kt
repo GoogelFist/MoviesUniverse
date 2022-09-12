@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -117,30 +118,44 @@ class MovieStaffFragment : Fragment(R.layout.movie_staff_fragment) {
             }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
-    // TODO:
     private fun setupLoadingState() {
-
+        with(binding) {
+            errorEmpty.errorBlock.isVisible = false
+            recyclerMovieStaff.isVisible = false
+            progressBarMovieStaff.isVisible = true
+        }
     }
 
-    // TODO:
     private fun setupErrorState() {
+        with(binding) {
+            errorEmpty.errorBlock.isVisible = true
+            recyclerMovieStaff.isVisible = false
+            progressBarMovieStaff.isVisible = false
+        }
     }
 
-    // TODO:
     private fun setupSuccessState(state: MovieStaffState.Success) {
+        with(binding) {
+            errorEmpty.errorBlock.isVisible = false
+            recyclerMovieStaff.isVisible = true
+            progressBarMovieStaff.isVisible = false
+        }
+
         movieStaffAdapter.submitList(state.movieStaff)
     }
 
-    // TODO:
     private fun setupButtons() {
-        binding.ivMovieStaffBackButton.setOnClickListener {
-            router.exit()
+        with(binding) {
+            ivMovieStaffBackButton.setOnClickListener {
+                router.exit()
+            }
+            errorEmpty.buttonTryAgain.setOnClickListener {
+                viewModel.obtainEvent(MovieStaffEvent.OnLoadMovieStaff(movieId))
+            }
         }
     }
 
     companion object {
-        private const val SPAN_COUNT = 2
-
         private const val KEY_ID = "id"
 
         fun newInstance(id: String): MovieStaffFragment {
