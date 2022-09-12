@@ -5,6 +5,7 @@ import com.example.moviesuniverse.di.applicationModule
 import com.example.moviesuniverse.di.data.moviesDataModule
 import com.example.moviesuniverse.di.data.retrofitModule
 import com.example.moviesuniverse.di.data.roomModule
+import com.example.moviesuniverse.di.data.staffDataModule
 import com.example.moviesuniverse.di.domainModule
 import com.example.moviesuniverse.di.globalNavigationModule
 import com.example.moviesuniverse.di.tabsNavigationModule
@@ -26,6 +27,7 @@ class MainApplication : Application() {
                     globalNavigationModule,
                     tabsNavigationModule,
                     moviesDataModule,
+                    staffDataModule,
                     domainModule,
                     retrofitModule,
                     roomModule

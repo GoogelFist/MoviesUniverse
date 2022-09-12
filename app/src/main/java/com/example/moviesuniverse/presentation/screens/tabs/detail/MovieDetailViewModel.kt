@@ -36,7 +36,7 @@ class MovieDetailViewModel(private val loadDetailMovieUseCase: LoadDetailMovieUs
                 .onEach { result ->
                     when (result) {
                         is ApiResult.Error -> emit(MovieDetailState.Error(result.error))
-                        is ApiResult.Success -> emit(MovieDetailState.Success(result.movieDetailResponse))
+                        is ApiResult.Success -> emit(MovieDetailState.Success(result.data))
                     }
                 }
                 .collect()

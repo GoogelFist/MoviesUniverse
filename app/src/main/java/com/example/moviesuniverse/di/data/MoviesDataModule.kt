@@ -1,8 +1,8 @@
 package com.example.moviesuniverse.di.data
 
 import com.example.moviesuniverse.data.MoviesRepositoryImpl
-import com.example.moviesuniverse.data.MoviesSearchRemoteMediator
-import com.example.moviesuniverse.data.MoviesTop250RemoteMediator
+import com.example.moviesuniverse.data.paging.MoviesSearchRemoteMediator
+import com.example.moviesuniverse.data.paging.MoviesTop250RemoteMediator
 import com.example.moviesuniverse.data.local.MoviesLocalDataSource
 import com.example.moviesuniverse.data.local.movies.MoviesDao
 import com.example.moviesuniverse.data.local.movies.RemoteKeysDao

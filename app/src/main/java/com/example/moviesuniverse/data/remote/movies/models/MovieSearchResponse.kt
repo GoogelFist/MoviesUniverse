@@ -13,7 +13,6 @@ data class MovieSearchResponse(
     @SerialName("totalPages")
     val totalPages: Int = 0
 ) {
-    // TODO: will handle when fields is empty
     @Serializable
     data class Item(
         @SerialName("kinopoiskId")

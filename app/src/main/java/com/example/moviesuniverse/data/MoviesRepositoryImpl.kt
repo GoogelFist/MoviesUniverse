@@ -7,6 +7,8 @@ import androidx.paging.PagingData
 import com.example.moviesuniverse.data.local.DaoResult
 import com.example.moviesuniverse.data.local.MoviesLocalDataSource
 import com.example.moviesuniverse.data.local.movies.models.MovieEntity
+import com.example.moviesuniverse.data.paging.MoviesSearchRemoteMediator
+import com.example.moviesuniverse.data.paging.MoviesTop250RemoteMediator
 import com.example.moviesuniverse.data.remote.ApiResult
 import com.example.moviesuniverse.data.remote.MoviesRemoteDataSource
 import com.example.moviesuniverse.domain.MoviesRepository
@@ -53,7 +55,7 @@ class MoviesRepositoryImpl(
     override suspend fun getDetailMovie(id: String): Flow<ApiResult<MovieDetail>> {
         return localDataSource.getMovieDetailById(id).flatMapConcat { daoResult ->
             if (daoResult is DaoResult.Exist) {
-                flow { emit(ApiResult.Success(daoResult.item)) }
+                flow { emit(ApiResult.Success(daoResult.data)) }
             } else {
                 getMovieDetailApiFlow(id)
             }
@@ -66,12 +68,12 @@ class MoviesRepositoryImpl(
             when (response) {
                 is ApiResult.Error -> flow { emit(ApiResult.Error(response.error)) }
                 is ApiResult.Success -> {
-                    localDataSource.insertMovieDetail(response.movieDetailResponse)
+                    localDataSource.insertMovieDetail(response.data)
 
                     flow {
                         localDataSource.getMovieDetailById(id).map { daoResult ->
                             if (daoResult is DaoResult.Exist) {
-                                ApiResult.Success(daoResult.item)
+                                ApiResult.Success(daoResult.data)
                             } else {
                                 emit(ApiResult.Error(RuntimeException(EXCEPTION_MESSAGE)))
                             }
