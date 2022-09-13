@@ -23,8 +23,10 @@ import com.github.terrakok.cicerone.androidx.AppNavigator
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.qualifier.named
@@ -149,10 +151,11 @@ class MoviesSearchTabFragment : Fragment(R.layout.movies_search_tab_fragment) {
     private fun isEmptyAdapter() = moviesAdapter.itemCount == 0
 
     private fun observeViewModel() {
-        viewModel.movies
-            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
-            .onEach { movies -> moviesAdapter.submitData(movies) }
-            .launchIn(viewLifecycleOwner.lifecycleScope)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.movies
+                .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+                .collectLatest { movies -> moviesAdapter.submitData(movies) }
+        }
     }
 
     private fun configInitialState() {
