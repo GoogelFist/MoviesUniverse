@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -19,6 +20,7 @@ import com.example.moviesuniverse.R
 import com.example.moviesuniverse.databinding.StaffDetailFragmentBinding
 import com.example.moviesuniverse.di.GLOBAL_QUALIFIER
 import com.example.moviesuniverse.domain.models.StaffDetail
+import com.example.moviesuniverse.presentation.screens.Screens
 import com.example.moviesuniverse.presentation.screens.tabs.sraff.detail.model.MovieStaffDetailEvent
 import com.example.moviesuniverse.presentation.screens.tabs.sraff.detail.model.MovieStaffDetailState
 import com.github.terrakok.cicerone.NavigatorHolder
@@ -63,9 +65,17 @@ class MovieStaffDetailFragment : Fragment(R.layout.staff_detail_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observeViewModel()
+
         init()
+        setOnBackPressButton()
+        observeViewModel()
         configButtons()
+    }
+
+    private fun setOnBackPressButton() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            router.newRootScreen(Screens.tabs())
+        }
     }
 
     override fun onResume() {
