@@ -33,9 +33,8 @@ class MovieStaffFragment : Fragment(R.layout.movie_staff_fragment) {
 
     private val viewModel by viewModel<MovieStaffViewModel>()
 
-    // TODO:
     private val movieStaffAdapter: MovieStaffAdapter by lazy(LazyThreadSafetyMode.NONE) {
-        MovieStaffAdapter { id -> router.navigateTo(Screens.movieStaff(id)) }
+        MovieStaffAdapter { staffId -> router.navigateTo(Screens.detailStaff(staffId)) }
     }
 
     private val movieId: String by lazy(LazyThreadSafetyMode.NONE) {

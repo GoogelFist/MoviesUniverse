@@ -1,9 +1,6 @@
 package com.example.moviesuniverse.di
 
-import com.example.moviesuniverse.domain.usecases.LoadDetailMovieUseCase
-import com.example.moviesuniverse.domain.usecases.LoadMovieStaffUseCase
-import com.example.moviesuniverse.domain.usecases.LoadMoviesUseCase
-import com.example.moviesuniverse.domain.usecases.SearchMoviesUseCase
+import com.example.moviesuniverse.domain.usecases.*
 import org.koin.dsl.module
 
 val domainModule = module {
@@ -11,8 +8,8 @@ val domainModule = module {
         LoadMoviesUseCase(moviesRepository = get())
     }
 
-    factory<LoadDetailMovieUseCase> {
-        LoadDetailMovieUseCase(moviesRepository = get())
+    factory<LoadMovieDetailUseCase> {
+        LoadMovieDetailUseCase(moviesRepository = get())
     }
 
     factory<SearchMoviesUseCase> {
@@ -21,5 +18,9 @@ val domainModule = module {
 
     factory<LoadMovieStaffUseCase> {
         LoadMovieStaffUseCase(moviesStaffRepository = get())
+    }
+
+    factory<LoadMovieStaffDetailUseCase> {
+        LoadMovieStaffDetailUseCase(moviesStaffRepository = get())
     }
 }
