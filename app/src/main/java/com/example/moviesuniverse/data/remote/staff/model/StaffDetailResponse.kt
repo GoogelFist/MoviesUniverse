@@ -6,8 +6,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 class StaffDetailResponse(
-    @SerialName("age")
-    val age: String = "",
     @SerialName("birthday")
     val birthday: String = "",
     @SerialName("birthplace")

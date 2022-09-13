@@ -69,7 +69,6 @@ val retrofitModule = module {
     }
 
     fun provideRetrofit(client: OkHttpClient, converterFactory: Converter.Factory): Retrofit {
-
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(converterFactory)

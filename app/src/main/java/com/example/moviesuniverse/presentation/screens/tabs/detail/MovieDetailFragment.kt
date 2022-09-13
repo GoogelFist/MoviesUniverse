@@ -105,7 +105,9 @@ class MovieDetailFragment : Fragment(R.layout.movie_detail_fragment) {
     private fun configButtons() {
         with(binding) {
             ivBackButton.setOnClickListener { router.exit() }
-            includeMovieDetailData.tvToStaffMovieDetail.setOnClickListener { router.navigateTo(Screens.movieStaff(movieId)) }
+            includeMovieDetailData.tvToStaffMovieDetail.setOnClickListener {
+                router.navigateTo(Screens.movieStaff(movieId))
+            }
         }
     }
 

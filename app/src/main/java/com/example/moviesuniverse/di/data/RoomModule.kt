@@ -15,8 +15,7 @@ private const val DATABASE_NAME = "Movie data base"
 val roomModule = module {
 
     fun provideDatabase(context: Application): DataBase {
-        return Room.databaseBuilder(context, DataBase::class.java, DATABASE_NAME)
-            .build()
+        return Room.databaseBuilder(context, DataBase::class.java, DATABASE_NAME).build()
     }
 
     fun provideMovieDao(database: DataBase): MoviesDao {

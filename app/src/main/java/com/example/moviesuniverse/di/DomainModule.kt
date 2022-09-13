@@ -20,7 +20,7 @@ val domainModule = module {
         LoadMovieStaffUseCase(moviesStaffRepository = get())
     }
 
-    factory<LoadMovieStaffDetailUseCase> {
-        LoadMovieStaffDetailUseCase(moviesStaffRepository = get())
+    factory<LoadStaffDetailUseCase> {
+        LoadStaffDetailUseCase(moviesStaffRepository = get())
     }
 }

@@ -23,8 +23,8 @@ import com.github.terrakok.cicerone.androidx.AppNavigator
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.qualifier.named
@@ -39,12 +39,7 @@ class MoviesSearchTabFragment : Fragment(R.layout.movies_search_tab_fragment) {
 
     private val moviesAdapter: PagingMovieAdapter by lazy(LazyThreadSafetyMode.NONE) {
         PagingMovieAdapter { id ->
-            router.navigateTo(
-                Screens.detailMovie(
-                    id,
-                    R.string.movies_tab_title
-                )
-            )
+            router.navigateTo(Screens.detailMovie(id, R.string.movies_tab_title))
         }
     }
 
@@ -101,7 +96,7 @@ class MoviesSearchTabFragment : Fragment(R.layout.movies_search_tab_fragment) {
     }
 
     private fun setupEditText() {
-        binding.textInputEditTextSearch.setOnEditorActionListener { v, actionId, event ->
+        binding.textInputEditTextSearch.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
 
                 if (v.text.isNullOrBlank()) {
@@ -154,13 +149,10 @@ class MoviesSearchTabFragment : Fragment(R.layout.movies_search_tab_fragment) {
     private fun isEmptyAdapter() = moviesAdapter.itemCount == 0
 
     private fun observeViewModel() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.movies
-                .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
-                .collectLatest { movies ->
-                    moviesAdapter.submitData(movies)
-                }
-        }
+        viewModel.movies
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+            .onEach { movies -> moviesAdapter.submitData(movies) }
+            .launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private fun configInitialState() {

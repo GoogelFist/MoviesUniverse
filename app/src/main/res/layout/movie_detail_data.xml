@@ -181,12 +181,10 @@
                 android:background="@drawable/round_corner_background"
                 android:foreground="?android:selectableItemBackground"
                 android:gravity="center"
-                android:paddingBottom="2dp"
                 android:paddingHorizontal="8dp"
+                android:paddingBottom="2dp"
                 android:text="@string/movie_detail_button_to_staff"
-                android:textSize="14sp"
-                android:textAppearance="@style/Text.MontserratSemiBold"
-                android:textColor="@color/white" />
+                android:textAppearance="@style/Text.MontserratSemiBold.14.White" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

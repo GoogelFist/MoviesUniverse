@@ -131,9 +131,8 @@ class MainTabFragment : Fragment(R.layout.main_fragment) {
     private fun observeViewModel() {
         viewModel.getMovieList()
             .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
-            .onEach { movies ->
-                moviesAdapter.submitData(movies)
-            }.launchIn(viewLifecycleOwner.lifecycleScope)
+            .onEach { movies -> moviesAdapter.submitData(movies) }
+            .launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private fun configDefaultState() {

@@ -5,7 +5,7 @@ import com.example.moviesuniverse.presentation.screens.tabs.detail.MovieDetailVi
 import com.example.moviesuniverse.presentation.screens.tabs.main.MainTabViewModel
 import com.example.moviesuniverse.presentation.screens.tabs.search.MoviesSearchTabViewModel
 import com.example.moviesuniverse.presentation.screens.tabs.sraff.MovieStaffViewModel
-import com.example.moviesuniverse.presentation.screens.tabs.sraff.detail.MovieStaffDetailViewModel
+import com.example.moviesuniverse.presentation.screens.tabs.sraff.detail.StaffDetailViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -31,7 +31,7 @@ val applicationModule = module {
         MovieStaffViewModel(loadMovieStaffUseCase = get())
     }
 
-    viewModel<MovieStaffDetailViewModel> {
-        MovieStaffDetailViewModel(loadMovieStaffDetailUseCase = get())
+    viewModel<StaffDetailViewModel> {
+        StaffDetailViewModel(loadStaffDetailUseCase = get())
     }
 }

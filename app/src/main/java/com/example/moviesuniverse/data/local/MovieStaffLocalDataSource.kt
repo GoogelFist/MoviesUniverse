@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface MovieStaffLocalDataSource {
 
-    suspend fun getMovieStaff(movieId: String): Flow<DaoResult<List<MovieStaffItem>>>
+    fun getMovieStaff(movieId: String): Flow<DaoResult<List<MovieStaffItem>>>
 
     suspend fun insertAllMoviesStaff(movieStaff: List<MovieStaffEntity>)
 

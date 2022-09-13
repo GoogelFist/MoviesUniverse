@@ -50,7 +50,6 @@ class MoviesRepositoryImpl(
         ).flow
     }
 
-    // TODO: will add update data in base by added date
     @OptIn(FlowPreview::class)
     override suspend fun getDetailMovie(id: String): Flow<ApiResult<MovieDetail>> {
         return localDataSource.getMovieDetailById(id).flatMapConcat { daoResult ->

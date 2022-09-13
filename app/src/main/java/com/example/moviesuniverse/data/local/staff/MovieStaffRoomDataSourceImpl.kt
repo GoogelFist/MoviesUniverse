@@ -16,7 +16,7 @@ class MovieStaffRoomDataSourceImpl(
     private val staffDetailDao: StaffDetailDao
 ) : MovieStaffLocalDataSource {
 
-    override suspend fun getMovieStaff(movieId: String): Flow<DaoResult<List<MovieStaffItem>>> {
+    override fun getMovieStaff(movieId: String): Flow<DaoResult<List<MovieStaffItem>>> {
         return movieStaffDao.getMovieStaff(movieId).map { movieStaff ->
             if (movieStaff.isEmpty()) {
                 DaoResult.NotExist()

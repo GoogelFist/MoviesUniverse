@@ -5,7 +5,7 @@ import com.example.moviesuniverse.domain.MoviesStaffRepository
 import com.example.moviesuniverse.domain.models.StaffDetail
 import kotlinx.coroutines.flow.Flow
 
-class LoadMovieStaffDetailUseCase(private val moviesStaffRepository: MoviesStaffRepository) {
+class LoadStaffDetailUseCase(private val moviesStaffRepository: MoviesStaffRepository) {
     suspend operator fun invoke(staffId: String): Flow<ApiResult<StaffDetail>> {
         return moviesStaffRepository.getStaffDetail(staffId)
     }

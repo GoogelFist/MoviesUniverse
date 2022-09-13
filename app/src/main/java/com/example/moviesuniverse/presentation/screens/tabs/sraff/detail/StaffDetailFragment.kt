@@ -1,7 +1,6 @@
 package com.example.moviesuniverse.presentation.screens.tabs.sraff.detail
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,8 +20,8 @@ import com.example.moviesuniverse.databinding.StaffDetailFragmentBinding
 import com.example.moviesuniverse.di.GLOBAL_QUALIFIER
 import com.example.moviesuniverse.domain.models.StaffDetail
 import com.example.moviesuniverse.presentation.screens.Screens
-import com.example.moviesuniverse.presentation.screens.tabs.sraff.detail.model.MovieStaffDetailEvent
-import com.example.moviesuniverse.presentation.screens.tabs.sraff.detail.model.MovieStaffDetailState
+import com.example.moviesuniverse.presentation.screens.tabs.sraff.detail.model.StaffDetailEvent
+import com.example.moviesuniverse.presentation.screens.tabs.sraff.detail.model.StaffDetailState
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.AppNavigator
@@ -32,13 +31,13 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.qualifier.named
 
-class MovieStaffDetailFragment : Fragment(R.layout.staff_detail_fragment) {
+class StaffDetailFragment : Fragment(R.layout.staff_detail_fragment) {
 
     private var _binding: StaffDetailFragmentBinding? = null
     private val binding: StaffDetailFragmentBinding
         get() = _binding!!
 
-    private val viewModel by viewModel<MovieStaffDetailViewModel>()
+    private val viewModel by viewModel<StaffDetailViewModel>()
 
     private val router: Router by inject(qualifier = named(GLOBAL_QUALIFIER))
     private val navigatorHolder: NavigatorHolder by inject(qualifier = named(GLOBAL_QUALIFIER))
@@ -94,19 +93,19 @@ class MovieStaffDetailFragment : Fragment(R.layout.staff_detail_fragment) {
     }
 
     private fun observeViewModel() {
-        viewModel.movieStaffDetailState
+        viewModel.staffDetailState
             .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
             .onEach { state ->
                 when (state) {
-                    MovieStaffDetailState.Loading -> setLoadingState()
-                    is MovieStaffDetailState.Error -> setErrorState()
-                    is MovieStaffDetailState.Success -> setSuccessState(state)
+                    StaffDetailState.Loading -> setLoadingState()
+                    is StaffDetailState.Error -> setErrorState()
+                    is StaffDetailState.Success -> setSuccessState(state)
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private fun init() {
-        viewModel.obtainEvent(MovieStaffDetailEvent.OnLoadMovieStaff(staffId))
+        viewModel.obtainEvent(StaffDetailEvent.OnLoad(staffId))
     }
 
     private fun configButtons() {
@@ -131,7 +130,7 @@ class MovieStaffDetailFragment : Fragment(R.layout.staff_detail_fragment) {
         }
     }
 
-    private fun setSuccessState(state: MovieStaffDetailState.Success) {
+    private fun setSuccessState(state: StaffDetailState.Success) {
         with(binding) {
             progressBarStaffDetail.isVisible = false
             groupSuccessStaffDetail.isVisible = true
@@ -142,7 +141,7 @@ class MovieStaffDetailFragment : Fragment(R.layout.staff_detail_fragment) {
     }
 
     private fun bindMovieDetailData(staffDetail: StaffDetail) {
-        with(binding.includeMovieDetailData) {
+        with(binding.includeStaffDetailData) {
 
             val cornerRadius = requireActivity()
                 .resources.getDimension(R.dimen.movie_detail_round_corner).toInt()
@@ -182,8 +181,8 @@ class MovieStaffDetailFragment : Fragment(R.layout.staff_detail_fragment) {
     companion object {
         private const val KEY_ID = "id"
 
-        fun newInstance(staffId: String): MovieStaffDetailFragment {
-            return MovieStaffDetailFragment().apply {
+        fun newInstance(staffId: String): StaffDetailFragment {
+            return StaffDetailFragment().apply {
                 arguments = Bundle().apply {
                     putString(KEY_ID, staffId)
                 }

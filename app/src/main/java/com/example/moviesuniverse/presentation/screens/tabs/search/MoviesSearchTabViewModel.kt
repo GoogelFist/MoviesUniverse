@@ -27,9 +27,8 @@ class MoviesSearchTabViewModel(private val searchMoviesUseCase: SearchMoviesUseC
 
     private fun searchMovies(query: String): Flow<PagingData<MovieItem>> {
         return searchMoviesUseCase(query)
-            .map { pagingData ->
-                pagingData.map { movieEntity -> movieEntity.toMovieItem() }
-            }.cachedIn(viewModelScope)
+            .map { pagingData -> pagingData.map { movieEntity -> movieEntity.toMovieItem() } }
+            .cachedIn(viewModelScope)
     }
 
     fun setQuery(query: String) {

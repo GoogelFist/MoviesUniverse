@@ -30,9 +30,7 @@ class MovieDetailViewModel(private val loadMovieDetailUseCase: LoadMovieDetailUs
 
         val movieDetailStateFlow = flow {
             loadMovieDetailUseCase(id)
-                .onStart {
-                    emit(MovieDetailState.Loading)
-                }
+                .onStart { emit(MovieDetailState.Loading) }
                 .onEach { result ->
                     when (result) {
                         is ApiResult.Error -> emit(MovieDetailState.Error(result.error))

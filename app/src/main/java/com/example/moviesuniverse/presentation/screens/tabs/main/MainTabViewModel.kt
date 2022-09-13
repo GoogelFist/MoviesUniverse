@@ -13,9 +13,8 @@ import kotlinx.coroutines.flow.map
 class MainTabViewModel(private val loadMoviesUseCase: LoadMoviesUseCase) : ViewModel() {
 
     fun getMovieList(): Flow<PagingData<MovieItem>> {
-         return loadMoviesUseCase()
-                .map { pagingData ->
-                    pagingData.map { movieEntity -> movieEntity.toMovieItem() }
-                }.cachedIn(viewModelScope)
+        return loadMoviesUseCase()
+            .map { pagingData -> pagingData.map { movieEntity -> movieEntity.toMovieItem() } }
+            .cachedIn(viewModelScope)
     }
 }

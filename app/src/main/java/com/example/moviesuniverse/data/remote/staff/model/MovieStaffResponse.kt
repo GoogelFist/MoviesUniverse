@@ -15,8 +15,6 @@ class MovieStaffResponse(
     val nameRu: String?,
     @SerialName("posterUrl")
     val posterUrl: String = "",
-    @SerialName("professionKey")
-    val professionKey: String = "",
     @SerialName("professionText")
     val professionText: String = "",
     @SerialName("staffId")
