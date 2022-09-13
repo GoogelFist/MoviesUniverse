@@ -19,14 +19,13 @@
             tools:ignore="ContentDescription" />
 
     <TextView
-            android:id="@+id/tv_title_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="@style/Text.MontserratSemiBold.24.Black"
             app:layout_constraintBottom_toBottomOf="@id/iv_back_button"
             app:layout_constraintStart_toEndOf="@id/iv_back_button"
             app:layout_constraintTop_toTopOf="@id/iv_back_button"
-            tools:text="@string/detail_title_text" />
+            android:text="@string/staff_detail_title_text" />
 
     <ScrollView
             android:id="@+id/scroll_view"
@@ -43,14 +42,14 @@
 
         <include
                 android:id="@+id/include_movie_detail_data"
-                layout="@layout/movie_detail_data"
+                layout="@layout/staff_detail_data"
                 android:layout_width="match_parent"
                 android:layout_height="0dp" />
 
     </ScrollView>
 
     <ProgressBar
-            android:id="@+id/progress_bar_movie_detail"
+            android:id="@+id/progress_bar_staff_detail"
             style="?android:progressBarStyleSmallTitle"
             android:layout_width="24dp"
             android:layout_height="24dp"
@@ -81,7 +80,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/error_screen_text"
+            android:text="@string/staff_detail_error_screen_text"
             android:textAppearance="@style/Text.RobotoRegular.14.Black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -89,14 +88,14 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Group
-            android:id="@+id/group_error_detail_movie"
+            android:id="@+id/group_error_staff_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
             app:constraint_referenced_ids="iv_error, tv_error_message" />
 
     <androidx.constraintlayout.widget.Group
-            android:id="@+id/group_success_detail_movie"
+            android:id="@+id/group_success_staff_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:constraint_referenced_ids="scroll_view" />

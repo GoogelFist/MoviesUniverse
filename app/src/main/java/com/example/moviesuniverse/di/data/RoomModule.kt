@@ -7,6 +7,7 @@ import com.example.moviesuniverse.data.local.movies.MoviesDao
 import com.example.moviesuniverse.data.local.movies.MoviesDetailDao
 import com.example.moviesuniverse.data.local.movies.RemoteKeysDao
 import com.example.moviesuniverse.data.local.staff.MoviesStaffDao
+import com.example.moviesuniverse.data.local.staff.StaffDetailDao
 import org.koin.dsl.module
 
 private const val DATABASE_NAME = "Movie data base"
@@ -34,9 +35,14 @@ val roomModule = module {
         return database.getRemoteKeyDao()
     }
 
+    fun provideStaffDetailDao(database: DataBase): StaffDetailDao {
+        return database.getStaffDetailDao()
+    }
+
     single<DataBase> { provideDatabase(context = get()) }
     single<MoviesDao> { provideMovieDao(database = get()) }
     single<MoviesDetailDao> { provideMovieDetailDao(database = get()) }
     single<MoviesStaffDao> { provideMovieStaffDao(database = get()) }
     single<RemoteKeysDao> { provideRemoteKeysDao(database = get()) }
+    single<StaffDetailDao> { provideStaffDetailDao(database = get()) }
 }

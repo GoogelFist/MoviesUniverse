@@ -3,7 +3,7 @@ package com.example.moviesuniverse.presentation.screens.tabs.detail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moviesuniverse.data.remote.ApiResult
-import com.example.moviesuniverse.domain.usecases.LoadDetailMovieUseCase
+import com.example.moviesuniverse.domain.usecases.LoadMovieDetailUseCase
 import com.example.moviesuniverse.presentation.screens.EventHandler
 import com.example.moviesuniverse.presentation.screens.tabs.detail.model.MovieDetailEvent
 import com.example.moviesuniverse.presentation.screens.tabs.detail.model.MovieDetailState
@@ -11,7 +11,7 @@ import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-class MovieDetailViewModel(private val loadDetailMovieUseCase: LoadDetailMovieUseCase) :
+class MovieDetailViewModel(private val loadMovieDetailUseCase: LoadMovieDetailUseCase) :
     ViewModel(), EventHandler<MovieDetailEvent> {
 
     private val _moveDetailState = MutableSharedFlow<MovieDetailState>(
@@ -29,7 +29,7 @@ class MovieDetailViewModel(private val loadDetailMovieUseCase: LoadDetailMovieUs
     private fun loadedMoveDetail(id: String) {
 
         val movieDetailStateFlow = flow {
-            loadDetailMovieUseCase(id)
+            loadMovieDetailUseCase(id)
                 .onStart {
                     emit(MovieDetailState.Loading)
                 }

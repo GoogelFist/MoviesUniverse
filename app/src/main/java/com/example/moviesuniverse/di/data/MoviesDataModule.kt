@@ -6,7 +6,7 @@ import com.example.moviesuniverse.data.paging.MoviesTop250RemoteMediator
 import com.example.moviesuniverse.data.local.MoviesLocalDataSource
 import com.example.moviesuniverse.data.local.movies.MoviesDao
 import com.example.moviesuniverse.data.local.movies.RemoteKeysDao
-import com.example.moviesuniverse.data.local.movies.RoomDataSourceImpl
+import com.example.moviesuniverse.data.local.movies.MoviesRoomDataSourceImpl
 import com.example.moviesuniverse.data.remote.MoviesRemoteDataSource
 import com.example.moviesuniverse.data.remote.movies.MoviesRetrofitDataSourceImpl
 import com.example.moviesuniverse.data.remote.movies.MoviesRetrofitService
@@ -52,7 +52,7 @@ val moviesDataModule = module {
     }
 
     single<MoviesLocalDataSource> {
-        RoomDataSourceImpl(moviesDao = get(), moveDetailDao = get())
+        MoviesRoomDataSourceImpl(moviesDao = get(), moveDetailDao = get())
     }
 
     single<MoviesTop250RemoteMediator> { (query: String) ->

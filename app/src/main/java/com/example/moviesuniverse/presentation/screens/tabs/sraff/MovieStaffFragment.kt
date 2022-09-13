@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -33,9 +34,8 @@ class MovieStaffFragment : Fragment(R.layout.movie_staff_fragment) {
 
     private val viewModel by viewModel<MovieStaffViewModel>()
 
-    // TODO:
     private val movieStaffAdapter: MovieStaffAdapter by lazy(LazyThreadSafetyMode.NONE) {
-        MovieStaffAdapter { id -> router.navigateTo(Screens.movieStaff(id)) }
+        MovieStaffAdapter { staffId -> router.navigateTo(Screens.detailStaff(staffId)) }
     }
 
     private val movieId: String by lazy(LazyThreadSafetyMode.NONE) {
@@ -69,9 +69,16 @@ class MovieStaffFragment : Fragment(R.layout.movie_staff_fragment) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.obtainEvent(MovieStaffEvent.OnLoadMovieStaff(movieId))
+        setOnBackPressButton()
         setupRecycler()
         observeViewModel()
         setupButtons()
+    }
+
+    private fun setOnBackPressButton() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            router.newRootScreen(Screens.tabs())
+        }
     }
 
     override fun onResume() {

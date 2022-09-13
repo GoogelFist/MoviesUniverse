@@ -1,11 +1,12 @@
-package com.example.moviesuniverse.presentation.screens.tabs.detail
+package com.example.moviesuniverse.presentation.screens.tabs.sraff.detail
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.annotation.StringRes
+import androidx.activity.addCallback
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -16,12 +17,12 @@ import androidx.lifecycle.lifecycleScope
 import coil.load
 import coil.transform.RoundedCornersTransformation
 import com.example.moviesuniverse.R
-import com.example.moviesuniverse.databinding.MovieDetailFragmentBinding
+import com.example.moviesuniverse.databinding.StaffDetailFragmentBinding
 import com.example.moviesuniverse.di.GLOBAL_QUALIFIER
-import com.example.moviesuniverse.domain.models.MovieDetail
+import com.example.moviesuniverse.domain.models.StaffDetail
 import com.example.moviesuniverse.presentation.screens.Screens
-import com.example.moviesuniverse.presentation.screens.tabs.detail.model.MovieDetailEvent
-import com.example.moviesuniverse.presentation.screens.tabs.detail.model.MovieDetailState
+import com.example.moviesuniverse.presentation.screens.tabs.sraff.detail.model.MovieStaffDetailEvent
+import com.example.moviesuniverse.presentation.screens.tabs.sraff.detail.model.MovieStaffDetailState
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.AppNavigator
@@ -31,13 +32,13 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.qualifier.named
 
-class MovieDetailFragment : Fragment(R.layout.movie_detail_fragment) {
+class MovieStaffDetailFragment : Fragment(R.layout.staff_detail_fragment) {
 
-    private var _binding: MovieDetailFragmentBinding? = null
-    private val binding: MovieDetailFragmentBinding
+    private var _binding: StaffDetailFragmentBinding? = null
+    private val binding: StaffDetailFragmentBinding
         get() = _binding!!
 
-    private val viewModel by viewModel<MovieDetailViewModel>()
+    private val viewModel by viewModel<MovieStaffDetailViewModel>()
 
     private val router: Router by inject(qualifier = named(GLOBAL_QUALIFIER))
     private val navigatorHolder: NavigatorHolder by inject(qualifier = named(GLOBAL_QUALIFIER))
@@ -49,7 +50,7 @@ class MovieDetailFragment : Fragment(R.layout.movie_detail_fragment) {
         )
     }
 
-    private val movieId: String by lazy(LazyThreadSafetyMode.NONE) {
+    private val staffId: String by lazy(LazyThreadSafetyMode.NONE) {
         arguments?.getString(KEY_ID) ?: ""
     }
 
@@ -58,15 +59,23 @@ class MovieDetailFragment : Fragment(R.layout.movie_detail_fragment) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = MovieDetailFragmentBinding.inflate(inflater, container, false)
+        _binding = StaffDetailFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observeViewModel()
+
         init()
+        setOnBackPressButton()
+        observeViewModel()
         configButtons()
+    }
+
+    private fun setOnBackPressButton() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            router.newRootScreen(Screens.tabs())
+        }
     }
 
     override fun onResume() {
@@ -85,63 +94,60 @@ class MovieDetailFragment : Fragment(R.layout.movie_detail_fragment) {
     }
 
     private fun observeViewModel() {
-        viewModel.movieDetailState
+        viewModel.movieStaffDetailState
             .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
             .onEach { state ->
                 when (state) {
-                    MovieDetailState.Loading -> setLoadingState()
-                    is MovieDetailState.Error -> setErrorState()
-                    is MovieDetailState.Success -> setSuccessState(state)
+                    MovieStaffDetailState.Loading -> setLoadingState()
+                    is MovieStaffDetailState.Error -> setErrorState()
+                    is MovieStaffDetailState.Success -> setSuccessState(state)
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private fun init() {
-        viewModel.obtainEvent(MovieDetailEvent.OnLoadMovie(movieId))
-
-        arguments?.getInt(TITLE_KEY)?.let { title -> binding.tvTitleDetail.setText(title) }
+        viewModel.obtainEvent(MovieStaffDetailEvent.OnLoadMovieStaff(staffId))
     }
 
     private fun configButtons() {
         with(binding) {
             ivBackButton.setOnClickListener { router.exit() }
-            includeMovieDetailData.tvToStaffMovieDetail.setOnClickListener { router.navigateTo(Screens.movieStaff(movieId)) }
         }
     }
 
     private fun setLoadingState() {
         with(binding) {
-            progressBarMovieDetail.isVisible = true
-            groupSuccessDetailMovie.isVisible = false
-            groupErrorDetailMovie.isVisible = false
+            progressBarStaffDetail.isVisible = true
+            groupSuccessStaffDetail.isVisible = false
+            groupErrorStaffDetail.isVisible = false
         }
     }
 
     private fun setErrorState() {
         with(binding) {
-            progressBarMovieDetail.isVisible = false
-            groupSuccessDetailMovie.isVisible = false
-            groupErrorDetailMovie.isVisible = true
+            progressBarStaffDetail.isVisible = false
+            groupSuccessStaffDetail.isVisible = false
+            groupErrorStaffDetail.isVisible = true
         }
     }
 
-    private fun setSuccessState(state: MovieDetailState.Success) {
+    private fun setSuccessState(state: MovieStaffDetailState.Success) {
         with(binding) {
-            progressBarMovieDetail.isVisible = false
-            groupSuccessDetailMovie.isVisible = true
-            groupErrorDetailMovie.isVisible = false
+            progressBarStaffDetail.isVisible = false
+            groupSuccessStaffDetail.isVisible = true
+            groupErrorStaffDetail.isVisible = false
 
-            bindMovieDetailData(state.movieDetail)
+            bindMovieDetailData(state.staffDetail)
         }
     }
 
-    private fun bindMovieDetailData(movieDetail: MovieDetail) {
+    private fun bindMovieDetailData(staffDetail: StaffDetail) {
         with(binding.includeMovieDetailData) {
 
             val cornerRadius = requireActivity()
                 .resources.getDimension(R.dimen.movie_detail_round_corner).toInt()
 
-            ivPosterMovieDetail.load(movieDetail.posterUrl) {
+            ivPosterStaffDetail.load(staffDetail.posterUrl) {
                 crossfade(true)
                 transformations(RoundedCornersTransformation(cornerRadius.toFloat()))
                 placeholder(R.drawable.image_placeholder)
@@ -149,34 +155,19 @@ class MovieDetailFragment : Fragment(R.layout.movie_detail_fragment) {
             }
 
             checkEmptyField(
-                field = tvYearMovieDetail,
-                value = movieDetail.year,
-                block = llYearBlock
+                field = tvBirthdayStaffDetail,
+                value = staffDetail.birthDay,
+                block = llBirthdayBlock
             )
             checkEmptyField(
-                field = tvCounrtiesMovieDetail,
-                value = movieDetail.countries,
-                block = llCountiesBlock
-            )
-            checkEmptyField(
-                field = tvGenresMovieDetail,
-                value = movieDetail.genres,
-                block = llGenresBlock
-            )
-            checkEmptyField(
-                field = tvLengthMovieDetail,
-                value = movieDetail.filmLength,
-                block = llLengthBlock
-            )
-            checkEmptyField(
-                field = tvRatingMovieDetail,
-                value = movieDetail.ratingKinopoisk,
-                block = llRatingBlock
+                field = tvBirthplaceStaffDetail,
+                value = staffDetail.birthPlace,
+                block = llBirthplaceBlock
             )
 
-            tvNameMovieDetail.text = movieDetail.nameRu
-            tvSloganMovieDetail.text = movieDetail.slogan
-            tvDescriptionMovieDetail.text = movieDetail.description
+            tvNameStaffDetail.text = staffDetail.name
+            tvFactsStaffDetail.text = staffDetail.facts
+            tvProfessionStaffDetail.text = staffDetail.profession
         }
     }
 
@@ -190,13 +181,11 @@ class MovieDetailFragment : Fragment(R.layout.movie_detail_fragment) {
 
     companion object {
         private const val KEY_ID = "id"
-        private const val TITLE_KEY = "title"
 
-        fun newInstance(id: String, @StringRes title: Int): MovieDetailFragment {
-            return MovieDetailFragment().apply {
+        fun newInstance(staffId: String): MovieStaffDetailFragment {
+            return MovieStaffDetailFragment().apply {
                 arguments = Bundle().apply {
-                    putString(KEY_ID, id)
-                    putInt(TITLE_KEY, title)
+                    putString(KEY_ID, staffId)
                 }
             }
         }

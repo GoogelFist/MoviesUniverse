@@ -1,12 +1,11 @@
 package com.example.moviesuniverse.domain.models
 
-data class MovieStaffDetail(
+data class StaffDetail(
     val id: String = "",
-    val nameRu: String = "",
-    val nameEn: String = "",
+    val name: String = "",
     val posterUrl: String = "",
-    val sex: Boolean = true,
     val birthDay: String = "",
     val birthPlace: String = "",
-    val facts: String = ""
+    val facts: String = "",
+    val profession: String = ""
 )

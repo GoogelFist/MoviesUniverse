@@ -5,10 +5,13 @@ import com.example.moviesuniverse.data.local.MovieStaffLocalDataSource
 import com.example.moviesuniverse.data.remote.ApiResult
 import com.example.moviesuniverse.data.remote.MovieStaffRemoteDataSource
 import com.example.moviesuniverse.domain.MoviesStaffRepository
-import com.example.moviesuniverse.domain.models.MovieStaffDetail
 import com.example.moviesuniverse.domain.models.MovieStaffItem
+import com.example.moviesuniverse.domain.models.StaffDetail
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 
 class MoviesStaffRepositoryImpl(
     private val remoteDataSource: MovieStaffRemoteDataSource,
@@ -48,12 +51,40 @@ class MoviesStaffRepositoryImpl(
         }
     }
 
-    // TODO:
-    override suspend fun getStaffDetail(staffId: String): Flow<ApiResult<MovieStaffDetail>> {
-        return emptyFlow()
+    @OptIn(FlowPreview::class)
+    override suspend fun getStaffDetail(staffId: String): Flow<ApiResult<StaffDetail>> {
+        return localDataSource.getStaffDetail(staffId).flatMapConcat { daoResult ->
+            if (daoResult is DaoResult.Exist) {
+                flow { emit(ApiResult.Success(daoResult.data)) }
+            } else {
+                getStaffDetailApiFlow(staffId)
+            }
+        }
+    }
+
+    @OptIn(FlowPreview::class)
+    private suspend fun getStaffDetailApiFlow(staffId: String): Flow<ApiResult<StaffDetail>> {
+        return remoteDataSource.getStaffDetail(staffId).flatMapConcat { response ->
+            when (response) {
+                is ApiResult.Error -> flow { emit(ApiResult.Error(response.error)) }
+                is ApiResult.Success -> {
+                    localDataSource.insertStaffDetail(response.data)
+
+                    flow {
+                        localDataSource.getStaffDetail(staffId).map { daoResult ->
+                            if (daoResult is DaoResult.Exist) {
+                                ApiResult.Success(daoResult.data)
+                            } else {
+                                emit(ApiResult.Error(RuntimeException(EXCEPTION_MESSAGE)))
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     companion object {
-        private const val EXCEPTION_MESSAGE = "Movie staff not exist in base after insert"
+        private const val EXCEPTION_MESSAGE = "Entity not exist in base after insert"
     }
 }

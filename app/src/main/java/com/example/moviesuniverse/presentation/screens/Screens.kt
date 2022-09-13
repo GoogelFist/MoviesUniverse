@@ -7,6 +7,7 @@ import com.example.moviesuniverse.presentation.screens.tabs.detail.MovieDetailFr
 import com.example.moviesuniverse.presentation.screens.tabs.main.MainTabFragment
 import com.example.moviesuniverse.presentation.screens.tabs.search.MoviesSearchTabFragment
 import com.example.moviesuniverse.presentation.screens.tabs.sraff.MovieStaffFragment
+import com.example.moviesuniverse.presentation.screens.tabs.sraff.detail.MovieStaffDetailFragment
 import com.github.terrakok.cicerone.androidx.FragmentScreen
 
 object Screens {
@@ -18,4 +19,6 @@ object Screens {
 
     fun detailMovie(id: String, @StringRes title: Int) =
         FragmentScreen { MovieDetailFragment.newInstance(id, title) }
+    fun detailStaff(staffId: String) =
+        FragmentScreen { MovieStaffDetailFragment.newInstance(staffId) }
 }
