@@ -21,6 +21,8 @@
     <string name="length_title_movie_detail">Продолжительность:</string>
     <string name="counties_title_movie_detail">Страны:</string>
     <string name="genres_title_movie_detail">Жанры:</string>
+    <string name="staff_title_movie_detail">Создатели:</string>
+    <string name="movie_detail_button_to_staff">перейти</string>
 
     <!--  Movie search fragment  -->
     <string name="movie_search_title_text">Фильмы</string>

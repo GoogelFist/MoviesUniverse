@@ -124,7 +124,7 @@
                 android:textAppearance="@style/Text.RobotoRegular.14.SpanishGrey" />
 
         <TextView
-                android:id="@+id/tv_counties_movie_detail"
+                android:id="@+id/tv_counrties_movie_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
@@ -157,6 +157,36 @@
                 android:maxLines="1"
                 android:textAppearance="@style/Text.RobotoRegular.14.Black"
                 tools:text="@tools:sample/lorem/random" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_staff_block"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/staff_title_movie_detail"
+                android:textAppearance="@style/Text.RobotoRegular.14.SpanishGrey" />
+
+        <TextView
+                android:id="@+id/tv_to_staff_movie_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/round_corner_background"
+                android:foreground="?android:selectableItemBackground"
+                android:gravity="center"
+                android:paddingBottom="2dp"
+                android:paddingHorizontal="8dp"
+                android:text="@string/movie_detail_button_to_staff"
+                android:textSize="14sp"
+                android:textAppearance="@style/Text.MontserratSemiBold"
+                android:textColor="@color/white" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

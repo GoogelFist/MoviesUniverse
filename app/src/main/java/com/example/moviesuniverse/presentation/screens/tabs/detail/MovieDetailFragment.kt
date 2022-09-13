@@ -105,7 +105,7 @@ class MovieDetailFragment : Fragment(R.layout.movie_detail_fragment) {
     private fun configButtons() {
         with(binding) {
             ivBackButton.setOnClickListener { router.exit() }
-            ivToMovieStaffButton.setOnClickListener { router.navigateTo(Screens.movieStaff(movieId)) }
+            includeMovieDetailData.tvToStaffMovieDetail.setOnClickListener { router.navigateTo(Screens.movieStaff(movieId)) }
         }
     }
 
@@ -154,7 +154,7 @@ class MovieDetailFragment : Fragment(R.layout.movie_detail_fragment) {
                 block = llYearBlock
             )
             checkEmptyField(
-                field = tvCountiesMovieDetail,
+                field = tvCounrtiesMovieDetail,
                 value = movieDetail.countries,
                 block = llCountiesBlock
             )
