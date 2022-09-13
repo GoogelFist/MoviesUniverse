@@ -2,6 +2,12 @@
 
 Приложение для поиска фильмов, актеров и информации о них.
 
+<p float="left">
+	<video src='https://user-images.githubusercontent.com/110708970/189915279-b55cb1e5-332b-4594-8d4a-140a00d46119.mp4' width=180/>
+</p>
+
+
+
 <details>
 <summary>Technologies</summary>
 
