@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="item_decorator_horizontal_margin">8dp</dimen>
+    <dimen name="item_decorator_vertical_margin">16dp</dimen>
+    <dimen name="movie_staff_item_round_corner">16dp</dimen>
+    <dimen name="movie_detail_round_corner">16dp</dimen>
+    <dimen name="movie_item_round_corner">16dp</dimen>
+
+</resources>

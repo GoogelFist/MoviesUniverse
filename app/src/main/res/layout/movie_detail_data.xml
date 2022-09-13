@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="16dp">
+
+    <ImageView
+            android:id="@+id/iv_poster_movie_detail"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:background="#B3B3B3"
+            tools:ignore="ContentDescription" />
+
+    <TextView
+            android:id="@+id/tv_name_movie_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:gravity="center_horizontal"
+            android:maxLines="2"
+            android:textAppearance="@style/Text.MontserratSemiBold.24.Black"
+            tools:text="Avengers" />
+
+    <TextView
+            android:id="@+id/tv_slogan_movie_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:gravity="center_horizontal"
+            android:textAppearance="@style/Text.RobotoRegular.14.Black"
+            tools:text="Slogan" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_rating_block"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rating_title_movie_detail"
+                android:textAppearance="@style/Text.RobotoRegular.14.SpanishGrey" />
+
+        <TextView
+                android:id="@+id/tv_rating_movie_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:textAppearance="@style/Text.RobotoRegular.14.Black"
+                tools:text="8.2" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_year_block"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/year_title_movie_detail"
+                android:textAppearance="@style/Text.RobotoRegular.14.SpanishGrey" />
+
+        <TextView
+                android:id="@+id/tv_year_movie_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:textAppearance="@style/Text.RobotoRegular.14.Black"
+                tools:text="2007" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_length_block"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/length_title_movie_detail"
+                android:textAppearance="@style/Text.RobotoRegular.14.SpanishGrey" />
+
+        <TextView
+                android:id="@+id/tv_length_movie_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAppearance="@style/Text.RobotoRegular.14.Black"
+                tools:text="123" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_counties_block"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/counties_title_movie_detail"
+                android:textAppearance="@style/Text.RobotoRegular.14.SpanishGrey" />
+
+        <TextView
+                android:id="@+id/tv_counrties_movie_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAppearance="@style/Text.RobotoRegular.14.Black"
+                tools:text="@tools:sample/lorem/random" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_genres_block"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/genres_title_movie_detail"
+                android:textAppearance="@style/Text.RobotoRegular.14.SpanishGrey" />
+
+        <TextView
+                android:id="@+id/tv_genres_movie_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAppearance="@style/Text.RobotoRegular.14.Black"
+                tools:text="@tools:sample/lorem/random" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_staff_block"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/staff_title_movie_detail"
+                android:textAppearance="@style/Text.RobotoRegular.14.SpanishGrey" />
+
+        <TextView
+                android:id="@+id/tv_to_staff_movie_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/round_corner_background"
+                android:foreground="?android:selectableItemBackground"
+                android:gravity="center"
+                android:paddingHorizontal="8dp"
+                android:paddingBottom="2dp"
+                android:text="@string/movie_detail_button_to_staff"
+                android:textAppearance="@style/Text.MontserratSemiBold.14.White" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <TextView
+            android:id="@+id/tv_description_movie_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:lineSpacingExtra="19dp"
+            android:lineSpacingMultiplier="0"
+            android:textAppearance="@style/Text.RobotoRegular.14.Black"
+            tools:text="@tools:sample/lorem/random" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

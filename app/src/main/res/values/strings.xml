@@ -1,3 +1,41 @@
 <resources>
     <string name="app_name">MoviesUniverse</string>
+
+    <!--  tabs fragment  -->
+    <string name="main_tab_title">Главная</string>
+    <string name="movies_tab_title">Фильмы</string>
+    <string name="staff_tab_title">Актеры</string>
+
+    <!--  Main fragment  -->
+    <string name="main_title_text">Главная</string>
+    <string name="try_again_button">Обновить</string>
+    <string name="main_load_error_text">Не удалось загрузить ленту\nОбновите экран или попробуйте позже</string>
+    <string name="snack_bar_error_text">Отсутствует соединение с интернетом</string>
+
+    <!--  Movie detail fragment  -->
+    <string name="detail_title_text">Главная</string>
+    <string name="to_movie_staff_title">Создатели</string>
+    <string name="error_screen_text">Не удалось загрузить информацию о фильме</string>
+    <string name="rating_title_movie_detail">Рейтинг:</string>
+    <string name="year_title_movie_detail">Год производства:</string>
+    <string name="length_title_movie_detail">Продолжительность:</string>
+    <string name="counties_title_movie_detail">Страны:</string>
+    <string name="genres_title_movie_detail">Жанры:</string>
+    <string name="staff_title_movie_detail">Создатели:</string>
+    <string name="movie_detail_button_to_staff">перейти</string>
+
+    <!--  Movie search fragment  -->
+    <string name="movie_search_title_text">Фильмы</string>
+    <string name="search_hint_text">Поиск</string>
+    <string name="init_screen_text">Введите ваш запрос</string>
+    <string name="empty_result_screen_text">По этому запросу нет результатов,\nпопробуйте другой запрос</string>
+
+    <!--  Movie staff fragment  -->
+    <string name="movie_staff_title_text">О фильме</string>
+
+    <!--  Movie staff fragment  -->
+    <string name="staff_detail_title_text">Создатели</string>
+    <string name="staff_detail_error_screen_text">Не удалось загрузить информацию о создателе</string>
+    <string name="staff_detail_birthplace_title">Место рожд:</string>
+    <string name="staff_detail_birthday_title">Дата рожд:</string>
 </resources>
