@@ -6,10 +6,12 @@ import com.example.moviesuniverse.data.local.DaoResult
 import com.example.moviesuniverse.data.local.movies.models.MovieDetailEntity
 import com.example.moviesuniverse.data.local.movies.models.MovieEntity
 import com.example.moviesuniverse.domain.models.MovieDetail
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
-class RoomDataSourceImpl(
+class MoviesRoomDataSourceImpl(
     private val moviesDao: MoviesDao,
     private val moveDetailDao: MoviesDetailDao
 ) : MoviesLocalDataSource {
@@ -25,7 +27,7 @@ class RoomDataSourceImpl(
             } else {
                 DaoResult.Exist(movieDetailEntity.toMovieDetail())
             }
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
     override suspend fun insertMovieDetail(movieDetailEntity: MovieDetailEntity) {

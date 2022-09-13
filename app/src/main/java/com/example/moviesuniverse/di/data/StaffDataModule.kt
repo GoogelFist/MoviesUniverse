@@ -22,6 +22,6 @@ val staffDataModule = module {
     }
 
     single<MovieStaffLocalDataSource> {
-        MovieStaffRoomDataSourceImpl(movieStaffDao = get())
+        MovieStaffRoomDataSourceImpl(movieStaffDao = get(), staffDetailDao = get())
     }
 }

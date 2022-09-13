@@ -1,6 +1,7 @@
 package com.example.moviesuniverse.presentation.screens.tabs.sraff.detail
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,9 +16,9 @@ import androidx.lifecycle.lifecycleScope
 import coil.load
 import coil.transform.RoundedCornersTransformation
 import com.example.moviesuniverse.R
-import com.example.moviesuniverse.databinding.MovieStaffDetailFragmentBinding
+import com.example.moviesuniverse.databinding.StaffDetailFragmentBinding
 import com.example.moviesuniverse.di.GLOBAL_QUALIFIER
-import com.example.moviesuniverse.domain.models.MovieStaffDetail
+import com.example.moviesuniverse.domain.models.StaffDetail
 import com.example.moviesuniverse.presentation.screens.tabs.sraff.detail.model.MovieStaffDetailEvent
 import com.example.moviesuniverse.presentation.screens.tabs.sraff.detail.model.MovieStaffDetailState
 import com.github.terrakok.cicerone.NavigatorHolder
@@ -29,10 +30,10 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.qualifier.named
 
-class MovieStaffDetailFragment : Fragment(R.layout.movie_staff_detail_fragment) {
+class MovieStaffDetailFragment : Fragment(R.layout.staff_detail_fragment) {
 
-    private var _binding: MovieStaffDetailFragmentBinding? = null
-    private val binding: MovieStaffDetailFragmentBinding
+    private var _binding: StaffDetailFragmentBinding? = null
+    private val binding: StaffDetailFragmentBinding
         get() = _binding!!
 
     private val viewModel by viewModel<MovieStaffDetailViewModel>()
@@ -56,7 +57,7 @@ class MovieStaffDetailFragment : Fragment(R.layout.movie_staff_detail_fragment) 
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = MovieStaffDetailFragmentBinding.inflate(inflater, container, false)
+        _binding = StaffDetailFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -106,37 +107,37 @@ class MovieStaffDetailFragment : Fragment(R.layout.movie_staff_detail_fragment) 
 
     private fun setLoadingState() {
         with(binding) {
-            progressBarMovieStaffDetail.isVisible = true
-            groupSuccessDetailMovie.isVisible = false
-            groupErrorDetailMovie.isVisible = false
+            progressBarStaffDetail.isVisible = true
+            groupSuccessStaffDetail.isVisible = false
+            groupErrorStaffDetail.isVisible = false
         }
     }
 
     private fun setErrorState() {
         with(binding) {
-            progressBarMovieStaffDetail.isVisible = false
-            groupSuccessDetailMovie.isVisible = false
-            groupErrorDetailMovie.isVisible = true
+            progressBarStaffDetail.isVisible = false
+            groupSuccessStaffDetail.isVisible = false
+            groupErrorStaffDetail.isVisible = true
         }
     }
 
     private fun setSuccessState(state: MovieStaffDetailState.Success) {
         with(binding) {
-            progressBarMovieStaffDetail.isVisible = false
-            groupSuccessDetailMovie.isVisible = true
-            groupErrorDetailMovie.isVisible = false
+            progressBarStaffDetail.isVisible = false
+            groupSuccessStaffDetail.isVisible = true
+            groupErrorStaffDetail.isVisible = false
 
-            bindMovieDetailData(state.movieStaffDetail)
+            bindMovieDetailData(state.staffDetail)
         }
     }
 
-    private fun bindMovieDetailData(movieStaffDetail: MovieStaffDetail) {
+    private fun bindMovieDetailData(staffDetail: StaffDetail) {
         with(binding.includeMovieDetailData) {
 
             val cornerRadius = requireActivity()
                 .resources.getDimension(R.dimen.movie_detail_round_corner).toInt()
 
-            ivPosterMovieStaffDetail.load(movieStaffDetail.posterUrl) {
+            ivPosterStaffDetail.load(staffDetail.posterUrl) {
                 crossfade(true)
                 transformations(RoundedCornersTransformation(cornerRadius.toFloat()))
                 placeholder(R.drawable.image_placeholder)
@@ -144,18 +145,19 @@ class MovieStaffDetailFragment : Fragment(R.layout.movie_staff_detail_fragment) 
             }
 
             checkEmptyField(
-                field = tvBirthplaceMovieStaffDetail,
-                value = movieStaffDetail.birthDay,
+                field = tvBirthdayStaffDetail,
+                value = staffDetail.birthDay,
                 block = llBirthdayBlock
             )
             checkEmptyField(
-                field = tvBirthplaceMovieStaffDetail,
-                value = movieStaffDetail.birthPlace,
+                field = tvBirthplaceStaffDetail,
+                value = staffDetail.birthPlace,
                 block = llBirthplaceBlock
             )
 
-            tvNameMovieStaffDetail.text = movieStaffDetail.name
-            tvFactsMovieStaffDetail.text = movieStaffDetail.facts
+            tvNameStaffDetail.text = staffDetail.name
+            tvFactsStaffDetail.text = staffDetail.facts
+            tvProfessionStaffDetail.text = staffDetail.profession
         }
     }
 

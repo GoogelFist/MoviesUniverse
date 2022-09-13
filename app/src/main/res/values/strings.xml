@@ -32,8 +32,8 @@
     <string name="movie_staff_title_text">О фильме</string>
 
     <!--  Movie staff fragment  -->
-    <string name="movie_detail_staff_title_text">Создатели</string>
-    <string name="movie_detail_staff_error_screen_text">Не удалось загрузить информацию о создателе</string>
-    <string name="birthplace_title_movie_staff_detail">Место рождения:</string>
-    <string name="birthday_title_movie_staff_detail">Год рождения:</string>
+    <string name="staff_detail_title_text">Создатели</string>
+    <string name="staff_detail_error_screen_text">Не удалось загрузить информацию о создателе</string>
+    <string name="staff_detail_birthplace_title">Место рожд:</string>
+    <string name="staff_detail_birthday_title">Дата рожд:</string>
 </resources>

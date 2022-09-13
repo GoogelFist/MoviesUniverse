@@ -9,7 +9,7 @@
         android:paddingBottom="16dp">
 
     <ImageView
-            android:id="@+id/iv_poster_movie_staff_detail"
+            android:id="@+id/iv_poster_staff_detail"
             android:layout_width="match_parent"
             android:layout_height="500dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -18,7 +18,7 @@
             tools:ignore="ContentDescription" />
 
     <TextView
-            android:id="@+id/tv_name_movie_staff_detail"
+            android:id="@+id/tv_name_staff_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -28,6 +28,16 @@
             android:maxLines="2"
             android:textAppearance="@style/Text.MontserratSemiBold.24.Black"
             tools:text="Tom Hanks" />
+
+    <TextView
+            android:id="@+id/tv_profession_staff_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:gravity="center_horizontal"
+            android:textAppearance="@style/Text.RobotoRegular.14.Black"
+            tools:text="Actor" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/ll_birthplace_block"
@@ -39,11 +49,11 @@
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/birthplace_title_movie_staff_detail"
+                android:text="@string/staff_detail_birthplace_title"
                 android:textAppearance="@style/Text.RobotoRegular.14.SpanishGrey" />
 
         <TextView
-                android:id="@+id/tv_birthplace_movie_staff_detail"
+                android:id="@+id/tv_birthplace_staff_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
@@ -62,11 +72,11 @@
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/birthday_title_movie_staff_detail"
+                android:text="@string/staff_detail_birthday_title"
                 android:textAppearance="@style/Text.RobotoRegular.14.SpanishGrey" />
 
         <TextView
-                android:id="@+id/tv_birthday_movie_staff_detail"
+                android:id="@+id/tv_birthday_staff_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
@@ -76,7 +86,7 @@
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <TextView
-            android:id="@+id/tv_facts_movie_staff_detail"
+            android:id="@+id/tv_facts_staff_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
