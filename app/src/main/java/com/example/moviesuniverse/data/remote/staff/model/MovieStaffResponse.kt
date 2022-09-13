@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 
 @Serializable
-data class MovieStaffResponse(
+class MovieStaffResponse(
     @SerialName("description")
     val description: String = "",
     @SerialName("nameEn")

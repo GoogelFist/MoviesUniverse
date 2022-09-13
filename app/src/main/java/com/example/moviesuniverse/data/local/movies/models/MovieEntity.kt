@@ -5,7 +5,6 @@ import androidx.room.Index
 import com.example.moviesuniverse.data.remote.movies.models.MovieItemResponse
 import com.example.moviesuniverse.data.remote.movies.models.MovieSearchResponse
 import com.example.moviesuniverse.domain.models.MovieItem
-import kotlinx.serialization.SerialName
 
 
 @Entity(
@@ -16,7 +15,7 @@ import kotlinx.serialization.SerialName
         Index(value = ["addedDate"], unique = false)
     ]
 )
-data class MovieEntity(
+class MovieEntity(
     val filmId: String = "",
     val nameRu: String = "",
     val nameEn: String = "",

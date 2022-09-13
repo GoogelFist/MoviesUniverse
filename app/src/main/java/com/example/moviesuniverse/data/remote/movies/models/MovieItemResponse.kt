@@ -5,14 +5,14 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class MovieItemResponse(
+class MovieItemResponse(
     @SerialName("films")
     val films: List<Film> = listOf(),
     @SerialName("pagesCount")
     val pagesCount: Int = 0
 ) {
     @Serializable
-    data class Film(
+    class Film(
         @SerialName("filmId")
         val filmId: Int = 0,
         @SerialName("nameRu")

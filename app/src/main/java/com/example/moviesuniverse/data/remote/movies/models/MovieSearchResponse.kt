@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class MovieSearchResponse(
+class MovieSearchResponse(
     @SerialName("items")
     val items: List<Item> = listOf(),
     @SerialName("total")
@@ -14,7 +14,7 @@ data class MovieSearchResponse(
     val totalPages: Int = 0
 ) {
     @Serializable
-    data class Item(
+    class Item(
         @SerialName("kinopoiskId")
         val filmId: Int = 0,
         @SerialName("nameRu")

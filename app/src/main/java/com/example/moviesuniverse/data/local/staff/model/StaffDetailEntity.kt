@@ -10,7 +10,7 @@ import java.util.*
 @Entity(
     tableName = "staff_detail"
 )
-data class StaffDetailEntity(
+class StaffDetailEntity(
     @PrimaryKey
     val id: String = "",
     val name: String = "",

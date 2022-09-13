@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class MovieDetailResponse(
+class MovieDetailResponse(
     @SerialName("countries")
     val countries: List<Country> = listOf(),
     @SerialName("description")

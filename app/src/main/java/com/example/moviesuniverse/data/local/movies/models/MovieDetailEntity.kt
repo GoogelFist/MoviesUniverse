@@ -9,7 +9,7 @@ import com.example.moviesuniverse.domain.models.MovieDetail
 @Entity(
     tableName = "movies_detail"
 )
-data class MovieDetailEntity(
+class MovieDetailEntity(
     @PrimaryKey
     val filmId: String = "",
     val countries: String = "",

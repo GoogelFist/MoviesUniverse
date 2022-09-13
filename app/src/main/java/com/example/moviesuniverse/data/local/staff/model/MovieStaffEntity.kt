@@ -13,7 +13,7 @@ import com.example.moviesuniverse.domain.models.MovieStaffItem
     ]
 )
 
-data class MovieStaffEntity(
+class MovieStaffEntity(
     val movieStaffId: String = "",
     val movieId: String = "",
     val name: String = "",
